@@ -44,7 +44,7 @@ public class MecanumDrive extends LinearOpMode
 
             //sets motor power according to joystick input
             motorRF.setPower(speed*((-gamepad1.left_stick_y - gamepad1.left_stick_x) - (zScale * gamepad1.right_stick_x)));
-            motorLB.setPower(speed*((gamepad1.left_stick_y - gamepad1.left_stick_x) + (zScale * gamepad1.right_stick_x)));
+            motorLB.setPower(speed*((gamepad1.left_stick_y + gamepad1.left_stick_x) + (zScale * gamepad1.right_stick_x)));
             motorRB.setPower(speed*(-(-gamepad1.left_stick_x + gamepad1.left_stick_y) - (zScale * gamepad1.right_stick_x)));
             motorLF.setPower(speed*((-gamepad1.left_stick_x + gamepad1.left_stick_y)) + (zScale * gamepad1.right_stick_x));
 
@@ -52,7 +52,7 @@ public class MecanumDrive extends LinearOpMode
             telemetry.addData("Motor RF Power", motorRF.getPower());
             telemetry.addData("motor LF power", motorLF.getPower());
             telemetry.addData("Motor RB power", motorRB.getPower());
-            telemetry.addData("Motor LF power", motorLF.getPower());
+            telemetry.addData("Motor LB power", motorLB.getPower());
 
             telemetry.addData("PC","2");
 
