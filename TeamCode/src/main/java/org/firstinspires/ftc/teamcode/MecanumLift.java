@@ -50,15 +50,15 @@ public class MecanumLift extends LinearOpMode
             motorLF.setPower(speed*((-gamepad1.left_stick_x + gamepad1.left_stick_y)) + (zScale * gamepad1.right_stick_x));
 
             //this if statement tell the robot if Y is pressed the arm goes up if A is pressed goes down and if nothings pressed it goes nowhere
-            if (gamepad1.y == true)
+            if (gamepad1.y)
             {
-                motorLift.setPower(100);
-                sleep(500);
+                motorLift.setPower(-1.0);
+
             }
-            else if(gamepad1.a == true)
+            else if(gamepad1.a)
             {
-            motorLift.setPower(-100);
-            sleep(500);
+            motorLift.setPower(1.0);
+
             }
             else
             {
