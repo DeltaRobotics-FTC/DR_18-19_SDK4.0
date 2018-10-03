@@ -54,7 +54,7 @@ public class MecanumDrive extends LinearOpMode
             telemetry.addData("Motor RB power", motorRB.getPower());
             telemetry.addData("Motor LB power", motorLB.getPower());
 
-            telemetry.addData("PC","3");
+            telemetry.addData("PC","4");
 
             telemetry.update();
         }
