@@ -39,6 +39,8 @@ public class MecanumLift extends LinearOpMode
         motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         waitForStart();
         while (opModeIsActive())
         {
@@ -74,6 +76,7 @@ public class MecanumLift extends LinearOpMode
             telemetry.addData("Motor RB power", motorRB.getPower());
             telemetry.addData("Motor LF power", motorLF.getPower());
             telemetry.addData("motor lift power", motorLift.getPower());
+            telemetry.addData("encoder lift", motorLift.getCurrentPosition());
 
             telemetry.update();
         }

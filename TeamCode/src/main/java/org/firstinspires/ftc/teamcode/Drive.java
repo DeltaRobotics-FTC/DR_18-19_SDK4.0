@@ -40,9 +40,9 @@ public class Drive extends LinearOpMode
     {
         double[] motorPowers = new double[4];
         motorPowers[0] = (-dirY - dirX) - pivot;
-        motorPowers[1] = -(-dirX + dirY) - pivot;
-        motorPowers[2] = -(-dirY - dirX) - pivot;
-        motorPowers[3] = (-dirX + dirY) - pivot;
+        motorPowers[1] = (dirX - dirY) + pivot;
+        motorPowers[2] = -(-dirY + dirX) - pivot;
+        motorPowers[3] = (-dirX + dirY) + pivot;
         //
 
         //motorPowers[0] = motorRF
