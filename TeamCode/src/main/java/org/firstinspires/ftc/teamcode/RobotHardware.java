@@ -60,11 +60,7 @@ public class RobotHardware
         motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//] Sets motors so when they have 0 power, they brake instead of coast
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
 
-        motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         motorRF.setPower(0);//]

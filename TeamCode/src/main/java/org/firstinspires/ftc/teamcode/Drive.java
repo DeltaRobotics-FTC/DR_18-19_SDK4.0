@@ -35,20 +35,20 @@ public class Drive extends LinearOpMode
     public static double encoder = 0;
     public static double startingEncoder = 0;
 
-
     public double[] setPower(double dirX, double dirY, double pivot)
     {
         double[] motorPowers = new double[4];
         motorPowers[0] = (-dirY - dirX) - pivot;
-        motorPowers[1] = (dirX - dirY) + pivot;
+        motorPowers[1] = (dirX + dirY) - pivot;
         motorPowers[2] = -(-dirY + dirX) - pivot;
-        motorPowers[3] = (-dirX + dirY) + pivot;
+        motorPowers[3] = (-dirX + dirY) - pivot;
         //
 
-        //motorPowers[0] = motorRF
-        //motorPowers[1] = motorRB
-        //motorPowers[2] = motorLB
-        //motorPowers[3] = motorLF
+        //References
+            //motorPowers[0] = motorRF
+            //motorPowers[1] = motorRB
+            //motorPowers[2] = motorLB
+            //motorPowers[3] = motorLF
 
         return motorPowers;
     }
