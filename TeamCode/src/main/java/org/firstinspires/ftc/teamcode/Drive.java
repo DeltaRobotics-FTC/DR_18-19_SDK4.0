@@ -38,11 +38,10 @@ public class Drive extends LinearOpMode
     public double[] setPower(double dirX, double dirY, double pivot)
     {
         double[] motorPowers = new double[4];
-        motorPowers[0] = (-dirY - dirX) - pivot;
-        motorPowers[1] = (dirX + dirY) - pivot;
-        motorPowers[2] = -(-dirY + dirX) - pivot;
-        motorPowers[3] = (-dirX + dirY) - pivot;
-        //
+        motorPowers[0] = (-dirY - dirX) - pivot;//robot.motorRF.setPower(speed*((-gamepad1.left_stick_y - gamepad1.left_stick_x) - (zScale * gamepad1.right_stick_x)));
+        motorPowers[1] = -(-dirX + dirY) - pivot;//robot.motorRB.setPower(speed*(-(-gamepad1.left_stick_x + gamepad1.left_stick_y) - (zScale * gamepad1.right_stick_x)));
+        motorPowers[2] = (dirY + dirX) - pivot;//robot.motorLB.setPower(speed*((gamepad1.left_stick_y + gamepad1.left_stick_x) - (zScale * gamepad1.right_stick_x)));
+        motorPowers[3] = (-dirX + dirY) - pivot;//robot.motorLF.setPower(speed*((-gamepad1.left_stick_x + gamepad1.left_stick_y)) - (zScale * gamepad1.right_stick_x));
 
         //References
             //motorPowers[0] = motorRF

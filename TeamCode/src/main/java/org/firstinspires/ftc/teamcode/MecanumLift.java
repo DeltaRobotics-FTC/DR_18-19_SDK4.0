@@ -22,6 +22,9 @@ public class MecanumLift extends LinearOpMode
     {
 
         robot.init(hardwareMap);
+
+        robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart();
         while (opModeIsActive())
         {
