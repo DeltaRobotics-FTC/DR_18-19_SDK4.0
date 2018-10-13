@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by User on 4/19/2018.
@@ -22,12 +23,14 @@ public class MecanumLift extends LinearOpMode
     {
 
         robot.init(hardwareMap);
-
+        Servo marker;//create a new servo
+        marker = hardwareMap.servo.get("marker");//goes to the hardware map and gets the servo information
         robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart();
         while (opModeIsActive())
         {
+
 
             //sets motor power according to joystick input
             /*robot.motorRF.setPower(speed*((-gamepad1.left_stick_y - gamepad1.left_stick_x) - (zScale * gamepad1.right_stick_x)));
@@ -57,7 +60,15 @@ public class MecanumLift extends LinearOpMode
                 robot.motorLift.setPower(0);
             }
 
-
+            //this progeram controls the marker dispencing system
+            if (gamepad1.right_bumper)
+            {
+                marker.setPosition(0.15);
+            }
+            else if(gamepad1.right_trigger >= 0.1)
+            {
+                marker.setPosition(0.8);
+            }
 
 
             //Sends data back to driver station
