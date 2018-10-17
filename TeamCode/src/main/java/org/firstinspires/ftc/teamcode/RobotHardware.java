@@ -34,6 +34,8 @@ public class RobotHardware
 
     public DcMotor motorLift = null; //motorLift on the the lift motor
 
+    public Servo marker = null;
+
     /**
      * Blank constructor
      */
@@ -54,6 +56,8 @@ public class RobotHardware
         motorLB = ahwMap.dcMotor.get("motorLB"); //What to look for in the config for motorLB
         motorLift = ahwMap.dcMotor.get("motorLift"); //What to look for in the config for motorLift
 
+        marker = ahwMap.servo.get("marker"); // What to look for  in the config for marker
+
         motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
         motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
         motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
@@ -62,6 +66,7 @@ public class RobotHardware
 
         //motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        marker.setPosition(0.15);
 
         motorRF.setPower(0);//]
         motorLF.setPower(0);//] Stops the drive motors

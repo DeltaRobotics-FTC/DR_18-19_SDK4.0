@@ -23,10 +23,18 @@ public class MecanumLift extends LinearOpMode
     {
 
         robot.init(hardwareMap);
-        Servo marker;//create a new servo
-        marker = hardwareMap.servo.get("marker");//goes to the hardware map and gets the servo information
         robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
         waitForStart();
         while (opModeIsActive())
         {
@@ -63,21 +71,27 @@ public class MecanumLift extends LinearOpMode
             //this progeram controls the marker dispencing system
             if (gamepad1.right_bumper)
             {
-                marker.setPosition(0.15);
+                robot.marker.setPosition(0.15);
             }
             else if(gamepad1.right_trigger >= 0.1)
             {
-                marker.setPosition(0.8);
+                robot.marker.setPosition(0.8);
             }
 
 
             //Sends data back to driver station
-            telemetry.addData("Motor RF Power", robot.motorRF.getPower());
+            /*telemetry.addData("Motor RF Power", robot.motorRF.getPower());
             telemetry.addData("motor LF power", robot.motorLF.getPower());
             telemetry.addData("Motor RB power", robot.motorRB.getPower());
             telemetry.addData("Motor LB power", robot.motorLB.getPower());
             telemetry.addData("motor lift power", robot.motorLift.getPower());
+            */
+
             telemetry.addData("encoder lift", robot.motorLift.getCurrentPosition());
+            telemetry.addData("encoder RB", robot.motorRB.getCurrentPosition());
+            telemetry.addData("encoder RF", robot.motorRF.getCurrentPosition());
+            telemetry.addData("encoder LF", robot.motorLF.getCurrentPosition());
+            telemetry.addData("encoder LB", robot.motorLB.getCurrentPosition());
 
             telemetry.update();
         }

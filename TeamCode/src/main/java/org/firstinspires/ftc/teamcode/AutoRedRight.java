@@ -51,10 +51,14 @@ public class AutoRedRight extends LinearOpMode
         telemetry.addData("motor lift pos",robot.motorLift.getCurrentPosition());
         }
         robot.motorLift.setPower(0);
+
         sleep(stepSleep);
-        drive.encoderDrive(450,driveStyle.STRAFE_RIGHT,0.75,motors);
+
+        drive.encoderDrive(200,driveStyle.STRAFE_RIGHT,0.20,motors);
+
         sleep(stepSleep);
-        drive.encoderDrive(6000,driveStyle.BACKWARD,0.75,motors);
+
+        drive.encoderDrive(6000,driveStyle.BACKWARD,0.45,motors);
 
 
 
