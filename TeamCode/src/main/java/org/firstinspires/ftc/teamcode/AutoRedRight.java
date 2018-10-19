@@ -45,20 +45,33 @@ public class AutoRedRight extends LinearOpMode
         waitForStart();
 
         //Lower robot to ground
+        /*
         robot.motorLift.setPower(1.0);
         while(robot.motorLift.getCurrentPosition() <= 20300)
         {
         telemetry.addData("motor lift pos",robot.motorLift.getCurrentPosition());
         }
         robot.motorLift.setPower(0);
+        */
 
-        sleep(stepSleep);
+        sleep(stepSleep);// wait till next step
 
-        drive.encoderDrive(200,driveStyle.STRAFE_RIGHT,0.20,motors);
+        drive.encoderDrive(200,driveStyle.STRAFE_RIGHT,0.20,motors);// makes the robot move right away from the latch
 
-        sleep(stepSleep);
+        sleep(stepSleep);// wait till next step
 
-        drive.encoderDrive(6000,driveStyle.BACKWARD,0.45,motors);
+        drive.encoderDrive(1600,driveStyle.BACKWARD,0.30,motors);// moves the robot to the Depot
+
+        sleep(stepSleep);// wait till next step
+
+        robot.marker.setPosition(0.8);// sets the servo to the set drop position
+
+        sleep(stepSleep);// wait till next step
+
+        robot.marker.setPosition(0.15);//setd the servo to the set up position
+
+        sleep(stepSleep);// wait till next step
+
 
 
 
