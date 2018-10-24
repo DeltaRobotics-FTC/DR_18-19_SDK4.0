@@ -76,6 +76,7 @@ android {
             ndk {
                 abiFilters "armeabi-v7a"
             }
+
         }
         debug {
             debuggable true
@@ -84,6 +85,7 @@ android {
             ndk {
                 abiFilters "armeabi-v7a"
             }
+
         }
     }
 

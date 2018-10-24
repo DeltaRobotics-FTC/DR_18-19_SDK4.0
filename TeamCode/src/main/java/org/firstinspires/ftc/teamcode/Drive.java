@@ -18,7 +18,7 @@ import static java.lang.Math.abs;
  * Created by User on 10/7/2017.
  */
 
-
+//Enumeration of different directions (styles) the robot can drive. These are used as arguments in the drive methods below
 enum driveStyle
 {
     FORWARD, BACKWARD, STRAFE_LEFT, STRAFE_RIGHT, FORWARD_RIGHT, FORWARD_LEFT, BACKWARD_RIGHT, BACKWARD_LEFT, PIVOT_RIGHT, PIVOT_LEFT
@@ -26,7 +26,7 @@ enum driveStyle
 public class Drive extends LinearOpMode
 {
 
-   public static double drivePower = 0.75;
+   /*public static double drivePower = 0.75;
     public static double strafePower = 0.85;
     public static double pivotPower = 0.6;
     public static boolean isMethodShareForwardFinished = false;
@@ -34,9 +34,21 @@ public class Drive extends LinearOpMode
     public static double time = 0;
     public static double encoder = 0;
     public static double startingEncoder = 0;
+    */
 
-    public double[] setPower(double dirX, double dirY, double pivot)
+   /*Method that contains the appropriate algorithms for each motor in the mecanum drive train.
+     This method is called in our autonomous and teleop programs to reduce duplicate code and inconsistencies
+     The algrotithms are adpated from our TeleOp. The arguments represent the joystick values that would be put in if ues in TeleOp.
+    */
+
+   /*Argument Breakdown:
+     dirX - Represents left joystick X value
+     dirY - Represents left joystick Y value
+     pivot - Represents right joystick X value
+    */
+   public double[] setPower(double dirX, double dirY, double pivot)
     {
+        //Array is used to store motors so they can be easily accessed in the method call based on the return value
         double[] motorPowers = new double[4];
         motorPowers[0] = (-dirY - dirX) - pivot;//robot.motorRF.setPower(speed*((-gamepad1.left_stick_y - gamepad1.left_stick_x) - (zScale * gamepad1.right_stick_x)));
         motorPowers[1] = -(-dirX + dirY) - pivot;//robot.motorRB.setPower(speed*(-(-gamepad1.left_stick_x + gamepad1.left_stick_y) - (zScale * gamepad1.right_stick_x)));
@@ -53,20 +65,39 @@ public class Drive extends LinearOpMode
     }
 
 
+    //Method that drives the robot via encoder target values and what the current encoder value of the motors are
+
+    /*
+    Argument Breakdown:
+    encoderDelta - Desired total change of the starting encoder value. How far the robot will go via encoder count readings
+    driveStyle - Desired direction the robot will drived. Uses enumeration declared at the top of the class
+    motorPower - Desired motor power the drive motors will run at
+    motors - Array that contains the drive motors. This is passed in so we can use the motors from an outside class (OpMode) in this class
+     */
     public boolean encoderDrive(int encoderDelta, driveStyle drive, double motorPower, DcMotor[] motors)
     {
         //ElapsedTime runtime = new ElapsedTime();
 
+        //Comments in FORWARD also apply for all the other cases in this method
 
+        //Switch statement used to handle which driveStyle enumeration was selected
         switch(drive)
         {
+            //If desired drive direction was forward
             case FORWARD:
             {
+                //Declares a sets a variable for the starting encoder value on a specific motor
                 double encoderReadingLB = motors[2].getCurrentPosition();
+                //Calculates desired encoder value by adding/subtracting the reading taken above by the desired encoder delta
                 double target = (encoderReadingLB - encoderDelta);
 
+                //Method declaration that will set the correct motor powers to move the robot the desired direction (based on which case you are in) with desired motor power
                 forward(motorPower, motors);
 
+                /*
+                Loop that haults the code from progressing till the desired encoder count is met.
+                This desired encoder value could either be positive or negative, so the appropriate logic is applied.
+                */
                 while (motors[2].getCurrentPosition() >= target)
                 {
 
@@ -150,7 +181,7 @@ public class Drive extends LinearOpMode
 
                 }
 
-//
+
                 break;
             }
 
@@ -217,11 +248,13 @@ public class Drive extends LinearOpMode
 
         }
 
+        //Stops all the motors
         motors[0].setPower(setPower(0, 0, 0)[0]);
         motors[1].setPower(setPower(0, 0, 0)[1]);
         motors[2].setPower(setPower(0, 0, 0)[2]);
         motors[3].setPower(setPower(0, 0, 0)[3]);
 
+       //Return value to see if the method was successfully executed
        return true;
     }
 
@@ -390,7 +423,7 @@ public class Drive extends LinearOpMode
                 motors[1].setPower(setPower(0, 0, 0)[1]);
                 motors[2].setPower(setPower(0, 0, 0)[2]);
                 motors[3].setPower(setPower(0, 0, 0)[3]);
-                //
+
                 break;
             }
 
@@ -470,7 +503,7 @@ public class Drive extends LinearOpMode
         motors[3].setPower(setPower(0, 0, motorPower)[3]);
     }
 
-       public void methodShareDriveForward(double motorPower, double methodTime, DcMotor[] motors)
+       /*public void methodShareDriveForward(double motorPower, double methodTime, DcMotor[] motors)
        {
            motors[0].setPower(setPower(0, -motorPower, 0)[0]);
            motors[1].setPower(setPower(0, -motorPower, 0)[1]);
@@ -512,6 +545,7 @@ public class Drive extends LinearOpMode
                 isMethodShareEncoderTestFinished = true;
             }
         }
+        */
 
 
 
