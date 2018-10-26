@@ -22,7 +22,7 @@ public class AutoRedRight extends LinearOpMode
 
         robot.init(hardwareMap);
 
-        robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        /*robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -32,7 +32,7 @@ public class AutoRedRight extends LinearOpMode
         robot.motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
 
 
         DcMotor[] motors = new DcMotor[4];

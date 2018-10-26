@@ -23,11 +23,11 @@ public class MecanumLift extends LinearOpMode
     {
 
         robot.init(hardwareMap);
-        robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        /*robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        /*robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorLF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);*/
+        robot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         /*robot.motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -88,15 +88,17 @@ public class MecanumLift extends LinearOpMode
             telemetry.addData("motor lift power", robot.motorLift.getPower());
             */
 
-            telemetry.addData("encoder lift", robot.motorLift.getCurrentPosition());
-            telemetry.addData("RB Power", robot.motorRB.getPower());
-            telemetry.addData("RF Power", robot.motorRF.getPower());
-            telemetry.addData("LF Power", robot.motorLF.getPower());
-            telemetry.addData("LB Power", robot.motorLB.getPower());
-            telemetry.addData("left stick x", gamepad1.right_stick_x);
-            telemetry.addData("left stick y", gamepad1.right_stick_y);
-
-
+            //telemetry.addData("encoder lift", robot.motorLift.getCurrentPosition());
+            telemetry.addData("RF Actual Power", robot.motorRF.getPower());
+            telemetry.addData("RB Actual Power", robot.motorRB.getPower());
+            telemetry.addData("LB Actual Power", robot.motorLB.getPower());
+            telemetry.addData("LF Actual Power", robot.motorLF.getPower());
+            telemetry.addData("RF Desired Power", drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[0]);
+            telemetry.addData("RB Desired Power", drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[1]);
+            telemetry.addData("LB Desired Power", drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[2]);
+            telemetry.addData("LF Desired Power", drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[3]);
+            telemetry.addData("left stick x", gamepad1.left_stick_x);
+            telemetry.addData("left stick y", gamepad1.left_stick_y);
 
             telemetry.update();
         }
