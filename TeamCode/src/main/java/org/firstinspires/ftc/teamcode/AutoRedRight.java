@@ -30,7 +30,7 @@ public class AutoRedRight extends LinearOpMode
 
         robot.motorRF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorRB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.motorLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.motorLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);++++++++++++++++++++++++++++++++++++++++++++
         robot.motorLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorLift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
 
@@ -56,11 +56,22 @@ public class AutoRedRight extends LinearOpMode
 
         sleep(stepSleep);// wait till next step
 
-        drive.encoderDrive(200,driveStyle.STRAFE_RIGHT,0.20,motors);// makes the robot move right away from the latch
+       // drive.encoderDrive(200,driveStyle.STRAFE_RIGHT,0.8,motors);// makes the robot move right away from the latch
+        double target = ( robot.motorRF.getCurrentPosition() - 400);
+        robot.motorRF.setPower(drive.setPower(0, 0.5, 0)[0]);
+        robot.motorLF.setPower(drive.setPower(0, -0.5, 0)[3]);
+        while (robot.motorRF.getCurrentPosition() >= target)
+        {
+            telemetry.addData("target", target);
+            telemetry.addData("RF Pos", robot.motorRF.getCurrentPosition());
+            telemetry.update();
+        }
+        robot.motorRF.setPower(0);
+        robot.motorLF.setPower(0);
 
         sleep(stepSleep);// wait till next step
 
-        drive.encoderDrive(1600,driveStyle.BACKWARD,0.30,motors);// moves the robot to the Depot
+        drive.encoderDrive(1600,driveStyle.BACKWARD,0.3,motors);// moves the robot to the Depot
 
         sleep(stepSleep);// wait till next step
 
