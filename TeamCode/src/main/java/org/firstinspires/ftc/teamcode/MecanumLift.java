@@ -88,7 +88,7 @@ public class MecanumLift extends LinearOpMode
             telemetry.addData("motor lift power", robot.motorLift.getPower());
             */
 
-            //telemetry.addData("encoder lift", robot.motorLift.getCurrentPosition());
+            telemetry.addData("encoder lift", robot.motorLift.getCurrentPosition());
             telemetry.addData("RF Actual Power", robot.motorRF.getPower());
             telemetry.addData("RB Actual Power", robot.motorRB.getPower());
             telemetry.addData("LB Actual Power", robot.motorLB.getPower());
