@@ -1,9 +1,16 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 /**
  * Created by User on 4/19/2018.
@@ -11,6 +18,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp(name="MecanumLift",group = "")
 public class MecanumLift extends LinearOpMode
 {
+    BNO055IMU imu;
+    Orientation angles;
 
     RobotHardware robot = new RobotHardware();
     Drive drive = new Drive();
@@ -23,6 +32,18 @@ public class MecanumLift extends LinearOpMode
     {
 
         robot.init(hardwareMap);
+        BNO055IMU.Parameters parametersIMU = new BNO055IMU.Parameters(); //Declares parameters object forIMU
+        parametersIMU.angleUnit = BNO055IMU.AngleUnit.DEGREES; //Sets the unit in which we measure orientation in degrees
+        parametersIMU.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC; //Sets acceleration unit in meters per second ??
+        parametersIMU.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode, sets what file the IMU ueses
+        parametersIMU.loggingEnabled = true; //Sets wether logging in enable
+        parametersIMU.loggingTag = "IMU"; //Sets logging tag
+        parametersIMU.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator(); //Sets acceleration integration algorithm
+        parametersIMU.temperatureUnit = BNO055IMU.TempUnit.CELSIUS; //Sets units for temperature readings
+        imu = hardwareMap.get(BNO055IMU.class, "imu"); //Inits IMU
+        imu.initialize(parametersIMU); //Init IMU parameters (set above)
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
+        telemetry.addData("Init Orientation", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays initial orientation
         /*robot.motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -99,6 +120,7 @@ public class MecanumLift extends LinearOpMode
             telemetry.addData("LF Desired Power", drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[3]);
             telemetry.addData("left stick x", gamepad1.left_stick_x);
             telemetry.addData("left stick y", gamepad1.left_stick_y);
+            telemetry.addData("Orientation", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
 
             telemetry.update();
         }
