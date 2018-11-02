@@ -25,7 +25,7 @@ public class MecanumLift extends LinearOpMode
     Drive drive = new Drive();
 
     double zScale = 1.0;
-    double speed = 1.0;
+    double speed = 0.75;
 
 
     public void runOpMode()
@@ -69,10 +69,10 @@ public class MecanumLift extends LinearOpMode
             robot.motorLF.setPower(speed*((-gamepad1.left_stick_x + gamepad1.left_stick_y)) - (zScale * gamepad1.right_stick_x));
             */
 
-            robot.motorRF.setPower(drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[0]);
-            robot.motorRB.setPower(drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[1]);
-            robot.motorLB.setPower(drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[2]);
-            robot.motorLF.setPower(drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[3]);
+            robot.motorRF.setPower(speed * drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[0]);
+            robot.motorRB.setPower(speed * drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[1]);
+            robot.motorLB.setPower(speed * drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[2]);
+            robot.motorLF.setPower(speed * drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[3]);
 
             //this if statement tell the robot if Y is pressed the arm goes up if A is pressed goes down and if nothings pressed it goes nowhere
             if (gamepad1.y)
@@ -100,6 +100,16 @@ public class MecanumLift extends LinearOpMode
                 robot.marker.setPosition(0.8);
             }
 
+            if(gamepad1.x)
+            {
+                speed = 0.75;
+            }
+
+            if(gamepad1.b)
+            {
+                speed = 0.45;
+            }
+
 
             //Sends data back to driver station
             /*telemetry.addData("Motor RF Power", robot.motorRF.getPower());
@@ -110,7 +120,7 @@ public class MecanumLift extends LinearOpMode
             */
 
             telemetry.addData("encoder lift", robot.motorLift.getCurrentPosition());
-            telemetry.addData("RF Actual Power", robot.motorRF.getPower());
+            /*telemetry.addData("RF Actual Power", robot.motorRF.getPower());
             telemetry.addData("RB Actual Power", robot.motorRB.getPower());
             telemetry.addData("LB Actual Power", robot.motorLB.getPower());
             telemetry.addData("LF Actual Power", robot.motorLF.getPower());
@@ -121,6 +131,8 @@ public class MecanumLift extends LinearOpMode
             telemetry.addData("left stick x", gamepad1.left_stick_x);
             telemetry.addData("left stick y", gamepad1.left_stick_y);
             telemetry.addData("Orientation", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+            */
+            telemetry.addData("speed",speed);
 
             telemetry.update();
         }

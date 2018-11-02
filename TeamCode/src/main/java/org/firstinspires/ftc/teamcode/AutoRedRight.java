@@ -70,7 +70,7 @@ public class AutoRedRight extends LinearOpMode {
         //Lower robot to ground
 
         robot.motorLift.setPower(1.0);
-        while (robot.motorLift.getCurrentPosition() <= 10400) {
+        while (robot.motorLift.getCurrentPosition() <= 11117) {
             telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
             telemetry.update();
         }
@@ -78,6 +78,7 @@ public class AutoRedRight extends LinearOpMode {
 
 
         sleep(stepSleep);// wait till next step
+
 
         // drive.encoderDrive(350,driveStyle.STRAFE_RIGHT,0.8,motors);// makes the robot move right away from the latch
         double target = (robot.motorRF.getCurrentPosition() - 700);
@@ -111,12 +112,13 @@ public class AutoRedRight extends LinearOpMode {
         robot.motorLF.setPower(0);*/
 
         angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
+        targetError = (pivotValue + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
         telemetry.addData("Before Correction", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+        telemetry.addData("Target Error", targetError);
         telemetry.update();
-        sleep(250);
-        targetError = (pivotValue + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)) / 2;
-        if (AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > (pivotValue + 3) || AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) < (pivotValue - 3))
-            if (targetError > 0) //If the robot's current orientation is greater than 0
+
+        if (AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > (pivotValue + 3) || AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) < (pivotValue - 3)) {
+            if (targetError < 0) //If the robot's current orientation is greater than 0
             {
                 telemetry.addData("Expected Change 1", targetError);
                 telemetry.update(); //Updates telemetry
@@ -127,7 +129,9 @@ public class AutoRedRight extends LinearOpMode {
                 telemetry.update(); //Updates telemetry
                 drive.OrientationDrive(Math.abs(targetError), driveStyle.PIVOT_RIGHT, 0.3, motors, imu); //Moves robot to correct orientation
             }
+        }
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
+            telemetry.addData("Target Error", targetError);
             telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction
             telemetry.update(); //Updates telemetry
 
@@ -149,18 +153,49 @@ public class AutoRedRight extends LinearOpMode {
 
             sleep(stepSleep);// wait till next step
 
-            drive.OrientationDrive(50, driveStyle.PIVOT_LEFT, 0.3, motors, imu);
+            drive.OrientationDrive(40, driveStyle.PIVOT_LEFT, 0.3, motors, imu);
 
             sleep(stepSleep);// wait till next step
 
-            drive.encoderDrive(900, driveStyle.STRAFE_LEFT, 0.6, motors);
+            drive.encoderDrive(1100, driveStyle.STRAFE_LEFT, 0.6, motors);
 
             sleep(stepSleep);// wait till next step
 
-            drive.encoderDrive(3800, driveStyle.FORWARD, 0.5, motors);
+        pivotValue = 45;
+        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
+        targetError = (pivotValue - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+        telemetry.addData("Before Correction", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+        telemetry.addData("Target Error", targetError);
+        telemetry.update();
 
-
+        if (AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > (pivotValue + 3) || AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) < (pivotValue - 3)) {
+            if (targetError < 0) //If the robot's current orientation is greater than 0
+            {
+                telemetry.addData("Expected Change 1", targetError);
+                telemetry.update(); //Updates telemetry
+                drive.OrientationDrive(Math.abs(targetError), driveStyle.PIVOT_LEFT, 0.3, motors, imu); //Moves robot to correct orientation
+            } else //If the robot's current orientation isn't greater than 0
+            {
+                telemetry.addData("Expected Change 2", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+                telemetry.update(); //Updates telemetry
+                drive.OrientationDrive(Math.abs(targetError), driveStyle.PIVOT_RIGHT, 0.3, motors, imu); //Moves robot to correct orientation
+            }
         }
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
+        telemetry.addData("Target Error", targetError);
+        telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction
+        telemetry.update(); //Updates telemetry
+
+        sleep(stepSleep);
+
+
+        drive.encoderDrive(4000, driveStyle.FORWARD, 0.5, motors);
+        sleep(stepSleep);
+        drive.timeDrive(500, 0.25, driveStyle.FORWARD, motors);
+
+
+
+    }
 
     }
 
