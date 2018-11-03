@@ -18,19 +18,26 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @TeleOp(name="MecanumLift",group = "")
 public class MecanumLift extends LinearOpMode
 {
+    //Object for IMU sensor built into the Rev Module
     BNO055IMU imu;
+
+    //Ojecet that stores values of the orientation sensor from the IMU
     Orientation angles;
 
+    //Object of RobotHardware class that allows access to all the component of the robot
     RobotHardware robot = new RobotHardware();
+
+    //Object of the Drive class so we can move the robot easily with one line of code
     Drive drive = new Drive();
 
-    double zScale = 1.0;
+    //Value the drive train motor power will be multiplied by to reduce the speed to make the robot more controllable
     double speed = 0.75;
 
 
     public void runOpMode()
     {
 
+        //Inits robot hardware
         robot.init(hardwareMap);
         BNO055IMU.Parameters parametersIMU = new BNO055IMU.Parameters(); //Declares parameters object forIMU
         parametersIMU.angleUnit = BNO055IMU.AngleUnit.DEGREES; //Sets the unit in which we measure orientation in degrees
@@ -57,6 +64,7 @@ public class MecanumLift extends LinearOpMode
         */
 
 
+        //Waits till the start button is pressed before moving on in the code
         waitForStart();
         while (opModeIsActive())
         {
@@ -69,10 +77,14 @@ public class MecanumLift extends LinearOpMode
             robot.motorLF.setPower(speed*((-gamepad1.left_stick_x + gamepad1.left_stick_y)) - (zScale * gamepad1.right_stick_x));
             */
 
-            robot.motorRF.setPower(speed * drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[0]);
-            robot.motorRB.setPower(speed * drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[1]);
-            robot.motorLB.setPower(speed * drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[2]);
-            robot.motorLF.setPower(speed * drive.setPower(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x)[3]);
+            /*
+            Uses the sub-method "setPower" in the drive class to set the motor powers to each of the drive train motors based on the mecanum algorithm
+            The values of the two joysticks are passed in to accomplish this
+            */
+            robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+            robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+            robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+            robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
 
             //this if statement tell the robot if Y is pressed the arm goes up if A is pressed goes down and if nothings pressed it goes nowhere
             if (gamepad1.y)
@@ -90,7 +102,7 @@ public class MecanumLift extends LinearOpMode
                 robot.motorLift.setPower(0);
             }
 
-            //this progeram controls the marker dispencing system
+            //this program controls the marker dispensing system
             if (gamepad1.right_bumper)
             {
                 robot.marker.setPosition(0.15);
@@ -100,11 +112,13 @@ public class MecanumLift extends LinearOpMode
                 robot.marker.setPosition(0.8);
             }
 
+            //Sets the drive train speed to the "fast mode" when the X button is pressed
             if(gamepad1.x)
             {
                 speed = 0.75;
             }
 
+            //Sets the drive train speed to the "slow mode" when the B button is pressed
             if(gamepad1.b)
             {
                 speed = 0.45;
@@ -119,6 +133,7 @@ public class MecanumLift extends LinearOpMode
             telemetry.addData("motor lift power", robot.motorLift.getPower());
             */
 
+            //Sends back the current encoder value for the lift via telemetry
             telemetry.addData("encoder lift", robot.motorLift.getCurrentPosition());
             /*telemetry.addData("RF Actual Power", robot.motorRF.getPower());
             telemetry.addData("RB Actual Power", robot.motorRB.getPower());
@@ -132,8 +147,10 @@ public class MecanumLift extends LinearOpMode
             telemetry.addData("left stick y", gamepad1.left_stick_y);
             telemetry.addData("Orientation", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
             */
+            //Sends back the the speed variable defined above via telemetry
             telemetry.addData("speed",speed);
 
+            //Updates telemetry
             telemetry.update();
         }
 
