@@ -4,20 +4,18 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.Drive;
 
 /**
  * Created by User on 4/19/2018.
  */
-@Autonomous(name="AutoRedRight",group = "")
-public class AutoRedRight extends LinearOpMode
+@Autonomous(name="AutoLeft",group = "")
+public class AutoLeft extends LinearOpMode
 {
     RobotHardware robot = new RobotHardware();
     BNO055IMU imu;
@@ -34,7 +32,7 @@ public class AutoRedRight extends LinearOpMode
 
             robot.init(hardwareMap);
 
-            BNO055IMU.Parameters parametersIMU = new BNO055IMU.Parameters(); //Declares parameters object forIMU
+            /*BNO055IMU.Parameters parametersIMU = new BNO055IMU.Parameters(); //Declares parameters object forIMU
             parametersIMU.angleUnit = BNO055IMU.AngleUnit.DEGREES; //Sets the unit in which we measure orientation in degrees
             parametersIMU.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC; //Sets acceleration unit in meters per second ??
             parametersIMU.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode, sets what file the IMU ueses
@@ -46,6 +44,7 @@ public class AutoRedRight extends LinearOpMode
             imu.initialize(parametersIMU); //Init IMU parameters (set above)
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
             telemetry.addData("Init Orientation", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays initial orientation
+            */
 
             /*robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -96,9 +95,10 @@ public class AutoRedRight extends LinearOpMode
             robot.motorRF.setPower(0);
             robot.motorLF.setPower(0);
 
-            sleep(stepSleep);// wait till next step
+            /*sleep(stepSleep);// wait till next step
 
             //Moves the robot away from the lander
+
             drive.encoderDrive(800, driveStyle.BACKWARD, 0.3, motors);
 
             sleep(stepSleep);
@@ -114,7 +114,7 @@ public class AutoRedRight extends LinearOpMode
                 telemetry.update();
             }
             robot.motorRF.setPower(0);
-            robot.motorLF.setPower(0);*/
+            robot.motorLF.setPower(0);
 
             //Orients robot to its starting orientation (from when it was hooked on lander). This makes sure we are oriented towards the mineral group and correct any errors in the orientation
             angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
@@ -211,7 +211,7 @@ public class AutoRedRight extends LinearOpMode
                 drive.encoderDrive(4000, driveStyle.FORWARD, 0.5, motors);
                 sleep(stepSleep);
                 //Moves robot a little bit to verify it is in the crater
-                drive.timeDrive(500, 0.25, driveStyle.FORWARD, motors);
+                drive.timeDrive(500, 0.25, driveStyle.FORWARD, motors)*/
 
         }
 
