@@ -32,7 +32,7 @@ public class AutoLeft extends LinearOpMode
 
             robot.init(hardwareMap);
 
-            /*BNO055IMU.Parameters parametersIMU = new BNO055IMU.Parameters(); //Declares parameters object forIMU
+            BNO055IMU.Parameters parametersIMU = new BNO055IMU.Parameters(); //Declares parameters object forIMU
             parametersIMU.angleUnit = BNO055IMU.AngleUnit.DEGREES; //Sets the unit in which we measure orientation in degrees
             parametersIMU.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC; //Sets acceleration unit in meters per second ??
             parametersIMU.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode, sets what file the IMU ueses
@@ -44,7 +44,7 @@ public class AutoLeft extends LinearOpMode
             imu.initialize(parametersIMU); //Init IMU parameters (set above)
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
             telemetry.addData("Init Orientation", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays initial orientation
-            */
+
 
             /*robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -95,16 +95,16 @@ public class AutoLeft extends LinearOpMode
             robot.motorRF.setPower(0);
             robot.motorLF.setPower(0);
 
-            /*sleep(stepSleep);// wait till next step
+            sleep(stepSleep);// wait till next step
 
             //Moves the robot away from the lander
 
-            drive.encoderDrive(800, driveStyle.BACKWARD, 0.3, motors);
+            drive.encoderDrive(400, driveStyle.BACKWARD, 0.3, motors);
 
             sleep(stepSleep);
 
             // this straightens the robot back to the Depot
-            /*double targetTwo = ( robot.motorRF.getCurrentPosition() + 400);
+            double targetTwo = ( robot.motorRF.getCurrentPosition() + 400);
             robot.motorRF.setPower(drive.setPower(0, -0.5, 0)[0]);
             robot.motorLF.setPower(drive.setPower(0, 0.5, 0)[3]);
             while (robot.motorRF.getCurrentPosition() <= targetTwo)
@@ -146,10 +146,10 @@ public class AutoLeft extends LinearOpMode
 
                 sleep(stepSleep);
 
-                //Moves robot into the depot, knocking off the middle mineral
-                drive.encoderDrive(2500, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
+                //Moves robot onto the crater, knocking off the middle mineral
+                drive.timeDrive(2000, 0.2, driveStyle.BACKWARD, motors);
 
-                sleep(stepSleep);// wait till next step
+                /*sleep(stepSleep);// wait till next step
 
                 //Sets the servo to the set drop position
                 robot.marker.setPosition(0.8);

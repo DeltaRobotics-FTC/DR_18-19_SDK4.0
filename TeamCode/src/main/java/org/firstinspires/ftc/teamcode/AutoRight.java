@@ -152,9 +152,9 @@ public class AutoRight extends LinearOpMode
                 sleep(stepSleep);// wait till next step
 
                 //Sets the servo to the set drop position
-                robot.marker.setPosition(0.8);
+                robot.marker.setPosition(1.0);
 
-                sleep(stepSleep);//wait till next step
+                sleep(1500);//wait till next step
 
                 //Set the servo to the set up position
                 robot.marker.setPosition(0.15);
@@ -177,7 +177,7 @@ public class AutoRight extends LinearOpMode
                 sleep(stepSleep);// wait till next step
 
                 //Corrects robots orientation to verify that it is parallel to the perimeter wall
-                pivotValue = 45;
+                pivotValue = 35;
                 angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
                 targetError = (pivotValue - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
                 telemetry.addData("Before Correction", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
@@ -211,7 +211,7 @@ public class AutoRight extends LinearOpMode
                 drive.encoderDrive(4000, driveStyle.FORWARD, 0.5, motors);
                 sleep(stepSleep);
                 //Moves robot a little bit to verify it is in the crater
-                drive.timeDrive(500, 0.25, driveStyle.FORWARD, motors);
+                drive.timeDrive(1000, 0.25, driveStyle.FORWARD, motors);
 
         }
 
