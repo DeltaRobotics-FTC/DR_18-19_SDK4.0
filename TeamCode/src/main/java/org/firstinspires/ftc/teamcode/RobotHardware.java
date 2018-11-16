@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -36,6 +37,8 @@ public class RobotHardware
 
     public Servo marker = null;
 
+    public TouchSensor liftLimitBottom = null;
+
     /**
      * Blank constructor
      */
@@ -57,6 +60,10 @@ public class RobotHardware
         motorLift = ahwMap.dcMotor.get("motorLift"); //What to look for in the config for motorLift
 
         marker = ahwMap.servo.get("marker"); // What to look for  in the config for marker
+
+        liftLimitBottom = ahwMap.touchSensor.get("liftLimitBottom");
+
+
 
         motorRF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
         motorLF.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
