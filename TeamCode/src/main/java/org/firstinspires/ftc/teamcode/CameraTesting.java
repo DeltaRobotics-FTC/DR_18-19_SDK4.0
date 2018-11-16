@@ -15,6 +15,13 @@ public class CameraTesting extends LinearOpModeCamera
 
     int mineralColorInt;
 
+    //Min and max values for the bounds of the area of the image that will be analyzed
+    int xMin = 80;
+    int xMax = 250;
+
+    int yMin = 1035;
+    int yMax = 1205;
+
     @Override
     public void runOpMode()
     {
@@ -40,18 +47,18 @@ public class CameraTesting extends LinearOpModeCamera
 
                         //This is for only saving the color image if needed.
 
-                        for (int x = 380; x < 580; x++) {
-                            for (int y = 280; y < 480; y++) {
-                                if (x == 579 && y >= 479) {
+                        for (int x = xMin; x <= xMax; x++) {
+                            for (int y = yMin; y <= yMax; y++) {
+                                if (x == xMax && y <= yMax) {
                                     rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
                                 }
-                                if (x >= 0 && y == 450) {
+                                if (x <= xMax && y == yMin) {
                                     rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
                                 }
-                                if (x == 380 && y >= 450) {
+                                if (x == xMin && y <= yMax) {
                                     rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
                                 }
-                                if (x >= 380 && y == 479) {
+                                if (x <= xMax && y == yMax) {
                                     rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
 
                                 }
@@ -64,8 +71,8 @@ public class CameraTesting extends LinearOpModeCamera
                         SaveImage(rgbImage);
 
                         //Analyzing Jewel Color
-                        for (int x = 550; x < 850; x++) {
-                            for (int y = 900; y < 1280; y++) {
+                        for (int x = xMin; x < xMax; x++) {
+                            for (int y = yMin; y < yMax; y++) {
                                 int pixel = rgbImage.getPixel(x, y);
                                 redValueLeft += red(pixel);
                                 blueValueLeft += blue(pixel);
@@ -86,14 +93,24 @@ public class CameraTesting extends LinearOpModeCamera
                         mineralColorInt = highestColor(redValueLeft, blueValueLeft, greenValueLeft);
 
                         telemetry.addData("Mineral", mineralColorInt);
-                        if (mineralColorInt == 0) {
+                        if (redValueLeft > 45 && greenValueLeft > 20 && blueValueLeft < 40) {
                             telemetry.addData("Mineral Color", "0 : Gold");
-                        } else if (redValueLeft > 100 && blueValueLeft > 100 && greenValueLeft > 100) {
-                            telemetry.addData("Mineral Color", "White");
+                            telemetry.addData("Red", redValueLeft);
+                            telemetry.addData("Blue", blueValueLeft);
+                            telemetry.addData("Green", greenValueLeft);
+                        } else if (redValueLeft > 32 && blueValueLeft > 32 && greenValueLeft > 32) {
+                            telemetry.addData("Mineral Color", "Silver");
+                            telemetry.addData("Red", redValueLeft);
+                            telemetry.addData("Blue", blueValueLeft);
+                            telemetry.addData("Green", greenValueLeft);
                         } else {
                             telemetry.addData("Mineral Color", "Something's Wrong");
+                            telemetry.addData("Red", redValueLeft);
+                            telemetry.addData("Blue", blueValueLeft);
+                            telemetry.addData("Green", greenValueLeft);
                         }
                         telemetry.update();
+                        sleep(5000);
                         stopCamera();
 
 

@@ -61,7 +61,8 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
 
 
-    public void surfaceCreated(SurfaceHolder holder) {
+    public void surfaceCreated(SurfaceHolder holder)
+    {
         try {
             Camera.Parameters parameters = mCamera.getParameters();
             //         mCamera.setDisplayOrientation(90);
