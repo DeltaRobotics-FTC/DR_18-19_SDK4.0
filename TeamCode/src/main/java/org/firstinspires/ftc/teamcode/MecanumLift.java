@@ -32,6 +32,7 @@ public class MecanumLift extends LinearOpMode
 
     //Value the drive train motor power will be multiplied by to reduce the speed to make the robot more controllable
     double speed = 0.75;
+    double liftSpeed = 1;
 
 
     public void runOpMode()
@@ -89,12 +90,12 @@ public class MecanumLift extends LinearOpMode
             //this if statement tell the robot if Y is pressed the arm goes up if A is pressed goes down and if nothings pressed it goes nowhere
             if (gamepad1.y)
             {
-                robot.motorLift.setPower(1.0);
+                robot.motorLift.setPower(liftSpeed);
 
             }
-            else if(gamepad1.a)
+            else if(gamepad1.a && !robot.liftLimitBottom.isPressed())
             {
-                robot.motorLift.setPower(-1.0);
+                robot.motorLift.setPower(-liftSpeed);
 
             }
             else
@@ -123,6 +124,14 @@ public class MecanumLift extends LinearOpMode
             {
                 speed = 0.45;
             }
+            if(gamepad1.dpad_up)
+            {
+                liftSpeed = 1;
+            }
+            if(gamepad1.dpad_down)
+            {
+                liftSpeed = 0.3;
+            }
 
 
             //Sends data back to driver station
@@ -148,7 +157,9 @@ public class MecanumLift extends LinearOpMode
             telemetry.addData("Orientation", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
             */
             //Sends back the the speed variable defined above via telemetry
-            telemetry.addData("speed",speed);
+            telemetry.addData("speed", speed);
+            telemetry.addData("liftSpeed", liftSpeed);
+            telemetry.addData("lift swich bottom status", robot.liftLimitBottom.isPressed());
 
             //Updates telemetry
             telemetry.update();
