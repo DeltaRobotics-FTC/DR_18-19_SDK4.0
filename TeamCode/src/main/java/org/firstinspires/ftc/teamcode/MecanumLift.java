@@ -159,7 +159,7 @@ public class MecanumLift extends LinearOpMode
             //Sends back the the speed variable defined above via telemetry
             telemetry.addData("speed", speed);
             telemetry.addData("liftSpeed", liftSpeed);
-            telemetry.addData("lift swich bottom status", robot.liftLimitBottom.isPressed());
+            telemetry.addData("lift swich bottom status", robot.liftLimitBottom.isPressed() );
 
             //Updates telemetry
             telemetry.update();

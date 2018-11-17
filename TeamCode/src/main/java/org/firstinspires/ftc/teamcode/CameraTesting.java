@@ -16,11 +16,11 @@ public class CameraTesting extends LinearOpModeCamera
     int mineralColorInt;
 
     //Min and max values for the bounds of the area of the image that will be analyzed
-    int xMin = 80;
-    int xMax = 250;
+    int xMin = 250;
+    int xMax = 550;
 
-    int yMin = 1035;
-    int yMax = 1205;
+    int yMin = 975;
+    int yMax = 1175;
 
     @Override
     public void runOpMode()
@@ -93,18 +93,13 @@ public class CameraTesting extends LinearOpModeCamera
                         mineralColorInt = highestColor(redValueLeft, blueValueLeft, greenValueLeft);
 
                         telemetry.addData("Mineral", mineralColorInt);
-                        if (redValueLeft > 45 && greenValueLeft > 20 && blueValueLeft < 40) {
+                        if (blueValueLeft < 70) {
                             telemetry.addData("Mineral Color", "0 : Gold");
                             telemetry.addData("Red", redValueLeft);
                             telemetry.addData("Blue", blueValueLeft);
                             telemetry.addData("Green", greenValueLeft);
-                        } else if (redValueLeft > 32 && blueValueLeft > 32 && greenValueLeft > 32) {
-                            telemetry.addData("Mineral Color", "Silver");
-                            telemetry.addData("Red", redValueLeft);
-                            telemetry.addData("Blue", blueValueLeft);
-                            telemetry.addData("Green", greenValueLeft);
                         } else {
-                            telemetry.addData("Mineral Color", "Something's Wrong");
+                            telemetry.addData("Mineral Color", "Silver");
                             telemetry.addData("Red", redValueLeft);
                             telemetry.addData("Blue", blueValueLeft);
                             telemetry.addData("Green", greenValueLeft);
@@ -112,6 +107,7 @@ public class CameraTesting extends LinearOpModeCamera
                         telemetry.update();
                         sleep(5000);
                         stopCamera();
+
 
 
                     }
