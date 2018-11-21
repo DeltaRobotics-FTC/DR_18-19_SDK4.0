@@ -32,7 +32,8 @@ public class MecanumLift extends LinearOpMode
 
     //Value the drive train motor power will be multiplied by to reduce the speed to make the robot more controllable
     double speed = 0.75;
-    double liftSpeed = 1;
+    double liftSpeed = 0.5;
+    double armSpeed = 0.5;
 
 
     public void runOpMode()
@@ -132,6 +133,10 @@ public class MecanumLift extends LinearOpMode
             {
                 liftSpeed = 0.3;
             }
+
+            //for mark 2 the arm and the armEXT for the robot
+            robot.Arm.setPower(armSpeed*gamepad2.left_stick_y);//arm
+            robot.armEXT.setPower(armSpeed*gamepad2 .right_stick_y);//armEXT
 
 
             //Sends data back to driver station

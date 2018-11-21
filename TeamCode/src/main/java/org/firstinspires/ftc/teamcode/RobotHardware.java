@@ -36,6 +36,10 @@ public class RobotHardware
 
     public DcMotor motorLift = null; //motorLift on the the lift motor
 
+    public DcMotor Arm = null; //Arm on the the lift motor
+
+    public DcMotor armEXT = null; //armEXT on the the lift motor
+
     public Servo marker = null;
 
     public DigitalChannel liftLimitBottom = null;
@@ -59,6 +63,9 @@ public class RobotHardware
         motorRB = ahwMap.dcMotor.get("motorRB"); //What to look for in config for motorRB
         motorLB = ahwMap.dcMotor.get("motorLB"); //What to look for in the config for motorLB
         motorLift = ahwMap.dcMotor.get("motorLift"); //What to look for in the config for motorLift
+        Arm = ahwMap.dcMotor.get("Arm"); //What to look for in the config for Arm
+        armEXT = ahwMap.dcMotor.get("armEXT");//What to look for in the config for armEXT
+
 
         marker = ahwMap.servo.get("marker"); // What to look for  in the config for marker
 
@@ -71,6 +78,8 @@ public class RobotHardware
         motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
         motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//] Sets motors so when they have 0 power, they brake instead of coast
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
+        Arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
+        armEXT.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
 
         liftLimitBottom.setMode(DigitalChannel.Mode.INPUT);
 
@@ -83,5 +92,8 @@ public class RobotHardware
         motorRB.setPower(0);//]
         motorLB.setPower(0);//]
         motorLift.setPower(0);//]
+        armEXT.setPower(0);//]
+        Arm.setPower(0);//]
+
     }
 }
