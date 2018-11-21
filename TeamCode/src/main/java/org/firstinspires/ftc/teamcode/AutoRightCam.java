@@ -80,25 +80,24 @@ public class AutoRightCam extends LinearOpModeCamera {
         motors[3] = robot.motorLF;
 
 
-        waitForStart();
+        if(isCameraAvailable())
+        {
 
-        //Lower robot to ground
-        robot.motorLift.setPower(1.0);
-        while (robot.motorLift.getCurrentPosition() <= 11117) {
-            telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
-            telemetry.update();
-        }
-        robot.motorLift.setPower(0);
-
-
-        sleep(stepSleep);
-
-
-        if (isCameraAvailable()) {
             setCameraDownsampling(1);
 
             startCamera();
 
+            waitForStart();
+
+            //Lower robot to ground
+            robot.motorLift.setPower(1.0);
+            while (robot.motorLift.getCurrentPosition() <= 11117) {
+                telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
+                telemetry.update();
+            }
+            robot.motorLift.setPower(0);
+
+            sleep(stepSleep);
 
             if (imageReady()) {
                 int redValueLeft = -76800;
@@ -299,8 +298,9 @@ public class AutoRightCam extends LinearOpModeCamera {
                 drive.timeDrive(1000, 0.25, driveStyle.FORWARD, motors);
 
             }
-
         }
+
+
 
     }
 }
