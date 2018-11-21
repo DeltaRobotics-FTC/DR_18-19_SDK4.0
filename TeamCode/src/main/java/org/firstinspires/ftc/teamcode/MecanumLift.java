@@ -93,7 +93,7 @@ public class MecanumLift extends LinearOpMode
                 robot.motorLift.setPower(liftSpeed);
 
             }
-            else if(gamepad1.a && !robot.liftLimitBottom.isPressed())
+            else if(gamepad1.a && robot.liftLimitBottom.getState()) //liftLimitBotom.getState() == true is for when the button is not being pressed
             {
                 robot.motorLift.setPower(-liftSpeed);
 
@@ -159,7 +159,7 @@ public class MecanumLift extends LinearOpMode
             //Sends back the the speed variable defined above via telemetry
             telemetry.addData("speed", speed);
             telemetry.addData("liftSpeed", liftSpeed);
-            telemetry.addData("lift swich bottom status", robot.liftLimitBottom.isPressed() );
+            telemetry.addData("lift swich bottom status", robot.liftLimitBottom.getState());
 
             //Updates telemetry
             telemetry.update();

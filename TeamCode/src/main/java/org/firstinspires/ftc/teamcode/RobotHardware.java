@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -37,7 +38,7 @@ public class RobotHardware
 
     public Servo marker = null;
 
-    public TouchSensor liftLimitBottom = null;
+    public DigitalChannel liftLimitBottom = null;
 
     /**
      * Blank constructor
@@ -61,7 +62,7 @@ public class RobotHardware
 
         marker = ahwMap.servo.get("marker"); // What to look for  in the config for marker
 
-        liftLimitBottom = ahwMap.touchSensor.get("liftLimitBottom");
+        liftLimitBottom = ahwMap.get(DigitalChannel.class, "liftLimitBottom");
 
 
 
@@ -70,6 +71,8 @@ public class RobotHardware
         motorLB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
         motorRB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//] Sets motors so when they have 0 power, they brake instead of coast
         motorLift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);//]
+
+        liftLimitBottom.setMode(DigitalChannel.Mode.INPUT);
 
         //motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
