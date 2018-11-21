@@ -104,6 +104,8 @@ public class CameraTesting extends LinearOpModeCamera
                             telemetry.addData("Blue", blueValueLeft);
                             telemetry.addData("Green", greenValueLeft);
                         }
+                        telemetry.addData("Width", rgbImage.getWidth());
+                        telemetry.addData("Height", rgbImage.getHeight());
                         telemetry.update();
                         sleep(5000);
                         stopCamera();

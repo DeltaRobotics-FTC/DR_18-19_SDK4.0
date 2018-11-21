@@ -80,8 +80,7 @@ public class AutoRightCam extends LinearOpModeCamera {
         motors[3] = robot.motorLF;
 
 
-        if(isCameraAvailable())
-        {
+        if(isCameraAvailable()) {
 
             setCameraDownsampling(1);
 
@@ -167,15 +166,20 @@ public class AutoRightCam extends LinearOpModeCamera {
                     telemetry.addData("Green", greenValueLeft);
                 }
                 telemetry.update();
-                sleep(5000);
-                stopCamera();
+                sleep(1000);
+
+            }
+
+            stopCamera();
+        }
+
 
 
                 sleep(stepSleep);// wait till next step
 
 
                 //Makes the robot move right away from the latch
-                double target = (robot.motorRF.getCurrentPosition() - 700);
+                double target = (robot.motorRF.getCurrentPosition() - 1000);
                 robot.motorRF.setPower(drive.setPower(0, 0.65, 0)[0]);
                 robot.motorLF.setPower(drive.setPower(0, -0.65, 0)[3]);
                 while (robot.motorRF.getCurrentPosition() >= target) {
@@ -185,8 +189,177 @@ public class AutoRightCam extends LinearOpModeCamera {
                 }
                 robot.motorRF.setPower(0);
                 robot.motorLF.setPower(0);
+                sleep(2000);
 
-                sleep(stepSleep);// wait till next step
+                if(isCameraAvailable()) {
+
+                    startCamera();
+                    setCameraDownsampling(1);
+                    if(imageReady()) {
+                        int redValueLeft = -76800;
+                        int blueValueLeft = -76800;
+                        int greenValueLeft = -76800;
+
+                        Bitmap rgbImage;
+                        //The last value must correspond to the downsampling value from above
+                        rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+
+                        rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                        sleep(5000);// wait till next step
+
+                        xMax = 865;
+                        xMin = 610;
+
+                        yMin = 975;
+                        yMax = 1175;
+
+                        for (int x = xMin; x <= xMax; x++) {
+                            for (int y = yMin; y <= yMax; y++) {
+                                if (x == xMax && y <= yMax) {
+                                    rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                                }
+                                if (x <= xMax && y == yMin) {
+                                    rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                                }
+                                if (x == xMin && y <= yMax) {
+                                    rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                                }
+                                if (x <= xMax && y == yMax) {
+                                    rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+
+                                }
+                            }
+                        }
+
+
+                        SaveImage(rgbImage);
+
+                        //Analyzing Jewel Color
+                        for (int x = xMin; x < xMax; x++) {
+                            for (int y = yMin; y < yMax; y++) {
+                                int pixel = rgbImage.getPixel(x, y);
+                                redValueLeft += red(pixel);
+                                blueValueLeft += blue(pixel);
+                                greenValueLeft += green(pixel);
+                            }
+                        }
+                        redValueLeft = normalizePixels(redValueLeft);
+                        blueValueLeft = normalizePixels(blueValueLeft);
+                        greenValueLeft = normalizePixels(greenValueLeft);
+                        /*telemetry.addData("redValueLeft", redValueLeft);
+                        telemetry.addData("blueValueLeft", blueValueLeft);
+                        telemetry.addData("greenValueLeft", greenValueLeft);
+                        telemetry.addData("Width", rgbImage.getWidth());
+                        telemetry.addData("Height", rgbImage.getHeight());
+                        telemetry.update();*/
+
+
+                        mineralColorInt = highestColor(redValueLeft, blueValueLeft, greenValueLeft);
+
+                        telemetry.addData("Mineral", mineralColorInt);
+                        if (blueValueLeft < 70) {
+                            telemetry.addData("Mineral Color", "0 : Gold");
+                            telemetry.addData("Red", redValueLeft);
+                            telemetry.addData("Blue", blueValueLeft);
+                            telemetry.addData("Green", greenValueLeft);
+                        } else {
+                            telemetry.addData("Mineral Color", "Silver");
+                            telemetry.addData("Red", redValueLeft);
+                            telemetry.addData("Blue", blueValueLeft);
+                            telemetry.addData("Green", greenValueLeft);
+                        }
+                        telemetry.update();
+                        sleep(1000);
+
+                    }
+
+                    stopCamera();
+                }
+
+        if(isCameraAvailable()) {
+
+            startCamera();
+            setCameraDownsampling(1);
+            if(imageReady()) {
+                int redValueLeft = -76800;
+                int blueValueLeft = -76800;
+                int greenValueLeft = -76800;
+
+                Bitmap rgbImage;
+                //The last value must correspond to the downsampling value from above
+                rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+
+                rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                sleep(2000);// wait till next step
+
+                xMax = 865;
+                xMin = 610;
+
+                yMin = 975;
+                yMax = 1175;
+
+                for (int x = xMin; x <= xMax; x++) {
+                    for (int y = yMin; y <= yMax; y++) {
+                        if (x == xMax && y <= yMax) {
+                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                        }
+                        if (x <= xMax && y == yMin) {
+                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                        }
+                        if (x == xMin && y <= yMax) {
+                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                        }
+                        if (x <= xMax && y == yMax) {
+                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+
+                        }
+                    }
+                }
+
+
+                SaveImage(rgbImage);
+
+                //Analyzing Jewel Color
+                for (int x = xMin; x < xMax; x++) {
+                    for (int y = yMin; y < yMax; y++) {
+                        int pixel = rgbImage.getPixel(x, y);
+                        redValueLeft += red(pixel);
+                        blueValueLeft += blue(pixel);
+                        greenValueLeft += green(pixel);
+                    }
+                }
+                redValueLeft = normalizePixels(redValueLeft);
+                blueValueLeft = normalizePixels(blueValueLeft);
+                greenValueLeft = normalizePixels(greenValueLeft);
+                        /*telemetry.addData("redValueLeft", redValueLeft);
+                        telemetry.addData("blueValueLeft", blueValueLeft);
+                        telemetry.addData("greenValueLeft", greenValueLeft);
+                        telemetry.addData("Width", rgbImage.getWidth());
+                        telemetry.addData("Height", rgbImage.getHeight());
+                        telemetry.update();*/
+
+
+                mineralColorInt = highestColor(redValueLeft, blueValueLeft, greenValueLeft);
+
+                telemetry.addData("Mineral", mineralColorInt);
+                if (blueValueLeft < 70) {
+                    telemetry.addData("Mineral Color", "0 : Gold");
+                    telemetry.addData("Red", redValueLeft);
+                    telemetry.addData("Blue", blueValueLeft);
+                    telemetry.addData("Green", greenValueLeft);
+                } else {
+                    telemetry.addData("Mineral Color", "Silver");
+                    telemetry.addData("Red", redValueLeft);
+                    telemetry.addData("Blue", blueValueLeft);
+                    telemetry.addData("Green", greenValueLeft);
+                }
+                telemetry.update();
+                sleep(5000);
+
+            }
+
+            stopCamera();
+        }
 
                 //Moves the robot away from the lander
                 drive.encoderDrive(800, driveStyle.BACKWARD, 0.3, motors);
@@ -297,8 +470,8 @@ public class AutoRightCam extends LinearOpModeCamera {
                 //Moves robot a little bit to verify it is in the crater
                 drive.timeDrive(1000, 0.25, driveStyle.FORWARD, motors);
 
-            }
-        }
+
+
 
 
 
