@@ -121,10 +121,10 @@ public class NewCameraTesting extends LinearOpModeCamera
 
                 if (isCameraAvailable())
                 {
-                    xMax = 865;
-                    xMin = 610;
+                    xMax = 845;
+                    xMin = 290;
 
-                    yMin = 975;
+                    yMin = 925;
                     yMax = 1175;
 
                     setCameraDownsampling(1);
@@ -214,10 +214,10 @@ public class NewCameraTesting extends LinearOpModeCamera
 
         if (isCameraAvailable())
         {
-            xMax = 865;
-            xMin = 610;
+            xMax = 845;
+            xMin = 290;
 
-            yMin = 975;
+            yMin = 925;
             yMax = 1175;
 
             setCameraDownsampling(1);
