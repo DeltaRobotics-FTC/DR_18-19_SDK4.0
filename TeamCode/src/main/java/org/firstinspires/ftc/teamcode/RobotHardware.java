@@ -42,7 +42,15 @@ public class RobotHardware
 
     public Servo marker = null;
 
+    public Servo collectionSweeper = null; //Collection sweeper servo
+
+    public Servo collectionGate = null; //Collection gate servo
+
+    public Servo collectionPivot = null; //Collector pivot servo
+
     public DigitalChannel liftLimitBottom = null;
+
+    public double collectionPivotStartPos = 0.5;
 
     /**
      * Blank constructor
@@ -68,6 +76,9 @@ public class RobotHardware
 
 
         marker = ahwMap.servo.get("marker"); // What to look for  in the config for marker
+        collectionSweeper = ahwMap.servo.get("collectionSweeper"); // What to look for  in the config for collectionSweeper
+        collectionGate = ahwMap.servo.get("collectionGate"); // What to look for  in the config for collectionGate
+        collectionPivot = ahwMap.servo.get("collectionPivot"); // What to look for  in the config for collectionPivot
 
         liftLimitBottom = ahwMap.get(DigitalChannel.class, "liftLimitBottom");
 
@@ -86,6 +97,9 @@ public class RobotHardware
         //motorLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         marker.setPosition(0.15);
+        collectionSweeper.setPosition(0.5);
+        collectionGate.setPosition(0.2);
+        collectionPivot.setPosition(collectionPivotStartPos);
 
         motorRF.setPower(0);//]
         motorLF.setPower(0);//] Stops the drive motors

@@ -127,15 +127,42 @@ public class MecanumLiftMK2 extends LinearOpMode
             {
                 liftSpeed = 1;
             }
+
             if(gamepad1.dpad_down)
             {
                 liftSpeed = 0.3;
+            }
+
+            if(gamepad2.right_bumper)
+            {
+                robot.collectionSweeper.setPosition(1.0);
+            }
+
+            if(gamepad2.right_trigger > 0.5)
+            {
+                robot.collectionSweeper.setPosition(0);
+            }
+
+            if(gamepad2.back)
+            {
+                robot.collectionSweeper.setPosition(0.5);
+            }
+
+            if(gamepad2.left_bumper)
+            {
+                robot.collectionGate.setPosition(0.2);
+            }
+
+            if(gamepad2.left_trigger > 0.5)
+            {
+                robot.collectionGate.setPosition(0.75);
             }
 
             //for mark 2 the arm and the armEXT for the robot
             robot.Arm.setPower(armSpeed*gamepad2.left_stick_y);//arm
             robot.armEXT.setPower(armSpeed*gamepad2 .right_stick_y);//armEXT
 
+            robot.collectionPivot.setPosition(robot.collectionPivotStartPos + (robot.Arm.getCurrentPosition() * 0.0001));
 
             //Sends data back to driver station
             /*telemetry.addData("Motor RF Power", robot.motorRF.getPower());
@@ -146,7 +173,6 @@ public class MecanumLiftMK2 extends LinearOpMode
             */
 
             //Sends back the current encoder value for the lift via telemetry
-            telemetry.addData("encoder lift", robot.motorLift.getCurrentPosition());
             /*telemetry.addData("RF Actual Power", robot.motorRF.getPower());
             telemetry.addData("RB Actual Power", robot.motorRB.getPower());
             telemetry.addData("LB Actual Power", robot.motorLB.getPower());
@@ -160,9 +186,14 @@ public class MecanumLiftMK2 extends LinearOpMode
             telemetry.addData("Orientation", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
             */
             //Sends back the the speed variable defined above via telemetry
-            telemetry.addData("speed", speed);
+            telemetry.addData("encoder lift", robot.motorLift.getCurrentPosition());
+            telemetry.addData("Drive speed", speed);
             telemetry.addData("liftSpeed", liftSpeed);
-            telemetry.addData("lift swich bottom status", robot.liftLimitBottom.getState());
+            telemetry.addData("lift switch bottom status", robot.liftLimitBottom.getState());
+            telemetry.addData("Arm Pos", robot.Arm.getCurrentPosition());
+            telemetry.addData("collectionPivot Pos", robot.collectionPivot.getPosition());
+            telemetry.addData("collectionGate Pos", robot.collectionGate.getPosition());
+            telemetry.addData("collectionSweeper Pos", robot.collectionSweeper.getPosition());
 
             //Updates telemetry
             telemetry.update();
