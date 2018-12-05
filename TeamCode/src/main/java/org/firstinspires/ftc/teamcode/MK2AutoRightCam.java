@@ -184,7 +184,7 @@ public class MK2AutoRightCam extends LinearOpModeCamera {
 
 
         //Makes the robot move away from the latch
-       drive.encoderDrive(200,driveStyle.FORWARD,0.3, motors);
+       drive.encoderDrive(200,driveStyle.BACKWARD,0.3, motors);
 
         sleep(stepSleep);
 
@@ -395,7 +395,7 @@ public class MK2AutoRightCam extends LinearOpModeCamera {
         }
 
         //Moves the robot away from the lander
-        pivotValue = -45;
+        /*pivotValue = -45;
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
         targetError = (pivotValue + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
         telemetry.addData("Before Correction", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
@@ -421,6 +421,7 @@ public class MK2AutoRightCam extends LinearOpModeCamera {
         telemetry.update(); //Updates telemetry
 
         sleep(stepSleep);
+        */
 
         // this straightens the robot back to the Depot
             /*double targetTwo = ( robot.motorRF.getCurrentPosition() + 400);
@@ -436,7 +437,7 @@ public class MK2AutoRightCam extends LinearOpModeCamera {
             robot.motorLF.setPower(0);*/
 
         //Orients robot to its starting orientation (from when it was hooked on lander). This makes sure we are oriented towards the mineral group and correct any errors in the orientation
-        pivotValue = 0;
+        pivotValue = 90;
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
         targetError = (pivotValue + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
         telemetry.addData("Before Correction", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
@@ -463,12 +464,12 @@ public class MK2AutoRightCam extends LinearOpModeCamera {
 
         sleep(stepSleep);
         //move back to lander
-        drive.encoderDrive(200,driveStyle.BACKWARD,0.3, motors);
+        drive.encoderDrive(200,driveStyle.FORWARD,0.3, motors);
 
 
         sleep(stepSleep);
         //move to minarals
-        drive.encoderDrive(900, driveStyle.STRAFE_RIGHT, 0.3, motors);
+        drive.encoderDrive(900, driveStyle.STRAFE_RIGHT, 0.3, motors); //Possibly delete
 
         sleep(stepSleep);
         //turn to minerals
@@ -507,7 +508,7 @@ public class MK2AutoRightCam extends LinearOpModeCamera {
 
             case LEFT:
             {
-                drive.encoderDrive(1650, driveStyle.STRAFE_LEFT, 0.8, motors);
+                drive.encoderDrive(1650, driveStyle.STRAFE_RIGHT, 0.8, motors);
                 sleep(stepSleep);
                 pivotValue = 25;
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
@@ -539,7 +540,7 @@ public class MK2AutoRightCam extends LinearOpModeCamera {
 
             case RIGHT:
             {
-                drive.encoderDrive(1600, driveStyle.STRAFE_RIGHT, 0.8, motors);
+                drive.encoderDrive(1600, driveStyle.STRAFE_LEFT, 0.8, motors);
                 sleep(stepSleep);
                 pivotValue = -15;
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
@@ -579,19 +580,19 @@ public class MK2AutoRightCam extends LinearOpModeCamera {
         {
             case CENTER:
             {
-                drive.encoderDrive(2500, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
+                drive.encoderDrive(2500, driveStyle.FORWARD, 0.3, motors);// moves the robot to the Depot
                 break;
             }
 
             case LEFT:
             {
-                drive.encoderDrive(2000, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
+                drive.encoderDrive(2000, driveStyle.FORWARD, 0.3, motors);// moves the robot to the Depot
                 break;
             }
 
             case RIGHT:
             {
-                drive.encoderDrive(2800, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
+                drive.encoderDrive(2800, driveStyle.FORWARD, 0.3, motors);// moves the robot to the Depot
                 break;
             }
         }
@@ -612,7 +613,7 @@ public class MK2AutoRightCam extends LinearOpModeCamera {
         sleep(stepSleep);// wait till next step
 
         //Moves robot away from the depot
-        drive.encoderDrive(550, driveStyle.FORWARD, 0.3, motors);
+        drive.encoderDrive(550, driveStyle.BACKWARD, 0.3, motors);
 
         sleep(stepSleep);// wait till next step
 
