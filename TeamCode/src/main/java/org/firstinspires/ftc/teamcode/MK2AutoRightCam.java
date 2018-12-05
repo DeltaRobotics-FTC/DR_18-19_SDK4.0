@@ -27,7 +27,7 @@ public class MK2AutoRightCam extends LinearOpModeCamera {
     BNO055IMU imu;
     Orientation angles;
 
-    Drive drive = new Drive();
+    Drive_MK2 drive = new Drive_MK2();
 
     MineralPositions mineralPositions = MineralPositions.LEFT;
 
