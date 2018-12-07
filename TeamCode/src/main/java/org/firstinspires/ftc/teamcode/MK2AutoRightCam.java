@@ -23,7 +23,7 @@ import for_camera_opmodes.LinearOpModeCamera;
 
 @Autonomous(name="MK2AutoRightCam",group = "")
 public class MK2AutoRightCam extends LinearOpModeCamera {
-    RobotHardware robot = new RobotHardware();
+    RobotHardware_MK2 robot = new RobotHardware_MK2();
     BNO055IMU imu;
     Orientation angles;
 

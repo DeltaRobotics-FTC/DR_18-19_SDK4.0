@@ -23,7 +23,7 @@ public class MecanumLiftMK2 extends LinearOpMode
     Orientation angles;
 
     //Object of RobotHardware class that allows access to all the component of the robot
-    RobotHardware robot = new RobotHardware();
+    RobotHardware_MK2 robot = new RobotHardware_MK2();
 
     //Object of the Drive class so we can move the robot easily with one line of code
     Drive_MK2 drive = new Drive_MK2();
@@ -133,12 +133,12 @@ public class MecanumLiftMK2 extends LinearOpMode
                 liftSpeed = 0.3;
             }
 
-            if(gamepad2.right_bumper)
+            if(gamepad2.left_bumper)
             {
                 robot.collectionSweeper.setPosition(1.0);
             }
 
-            if(gamepad2.right_trigger > 0.5)
+            if(gamepad2.left_trigger > 0.5)
             {
                 robot.collectionSweeper.setPosition(0);
             }
@@ -148,12 +148,12 @@ public class MecanumLiftMK2 extends LinearOpMode
                 robot.collectionSweeper.setPosition(0.5);
             }
 
-            if(gamepad2.left_bumper)
+            if(gamepad2.right_bumper)
             {
                 robot.collectionGate.setPosition(0.2);
             }
 
-            if(gamepad2.left_trigger > 0.5)
+            if(gamepad2.right_trigger > 0.5)
             {
                 robot.collectionGate.setPosition(0.75);
             }
