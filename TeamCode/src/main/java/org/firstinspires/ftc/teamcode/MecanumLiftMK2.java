@@ -133,12 +133,12 @@ public class MecanumLiftMK2 extends LinearOpMode
                 liftSpeed = 0.3;
             }
 
-            if(gamepad2.right_bumper)
+            if(gamepad2.left_bumper)
             {
                 robot.collectionSweeper.setPosition(1.0);
             }
 
-            if(gamepad2.right_trigger > 0.5)
+            if(gamepad2.left_trigger > 0.5)
             {
                 robot.collectionSweeper.setPosition(0);
             }
@@ -148,12 +148,12 @@ public class MecanumLiftMK2 extends LinearOpMode
                 robot.collectionSweeper.setPosition(0.5);
             }
 
-            if(gamepad2.left_bumper)
+            if(gamepad2.right_bumper)
             {
                 robot.collectionGate.setPosition(0.2);
             }
 
-            if(gamepad2.left_trigger > 0.5)
+            if(gamepad2.right_trigger > 0.5)
             {
                 robot.collectionGate.setPosition(0.75);
             }
