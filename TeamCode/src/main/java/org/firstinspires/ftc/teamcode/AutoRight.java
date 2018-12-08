@@ -97,7 +97,7 @@ public class AutoRight extends LinearOpModeCamera {
                 waitForStart();
 
                 //Lower robot to ground
-                /*robot.motorLift.setPower(1.0);
+                robot.motorLift.setPower(1.0);
                 while (robot.motorLift.getCurrentPosition() <= 11117) {
                     telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                     telemetry.update();
@@ -105,7 +105,7 @@ public class AutoRight extends LinearOpModeCamera {
                 robot.motorLift.setPower(0);
 
                 sleep(stepSleep);
-                */
+
 
                 if (imageReady()) {
                     int redValueLeft = -76800;
@@ -189,7 +189,7 @@ public class AutoRight extends LinearOpModeCamera {
 
 
             //Makes the robot move right away from the latch
-            double target = (robot.motorRF.getCurrentPosition() - 700);
+            /*double target = (robot.motorRF.getCurrentPosition() - 700);
             robot.motorRF.setPower(drive.setPower(0, 0.65, 0)[0]);
             robot.motorLF.setPower(drive.setPower(0, -0.65, 0)[3]);
             while (robot.motorRF.getCurrentPosition() >= target) {
@@ -197,6 +197,10 @@ public class AutoRight extends LinearOpModeCamera {
                 telemetry.addData("RF Pos", robot.motorRF.getCurrentPosition());
                 telemetry.update();
             }
+            */
+            robot.motorRF.setPower(drive.setPower(0, 0.65, 0)[0]);
+            robot.motorLF.setPower(drive.setPower(0, -0.65, 0)[3]);
+            sleep(750);
             robot.motorRF.setPower(0);
             robot.motorLF.setPower(0);
 
@@ -463,32 +467,32 @@ public class AutoRight extends LinearOpModeCamera {
 
                 case RIGHT:
                 {
-                    drive.encoderDrive(1600, driveStyle.STRAFE_RIGHT, 1.0, motors);
-                    sleep(stepSleep);
                     pivotValue = -7;
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
-                    targetError = (pivotValue + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+                    targetError = (pivotValue - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
                     telemetry.addData("Before Correction", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
                     telemetry.addData("Target Error", targetError);
                     telemetry.update();
 
-                    if (AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > (pivotValue + 3) || AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) < (pivotValue - 3)) {
+                    if (AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > (pivotValue + 1) || AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) < (pivotValue - 1)) {
                         if (targetError > 0) //If the robot's current orientation is greater than 0
                         {
                             telemetry.addData("Target Error -", targetError);
                             telemetry.update(); //Updates telemetry
-                            drive.OrientationDrive(Math.abs(targetError), driveStyle.PIVOT_LEFT, 0.3, motors, imu); //Moves robot to correct orientation
+                            drive.OrientationDrive(Math.abs(targetError), driveStyle.PIVOT_LEFT, 0.5, motors, imu); //Moves robot to correct orientation
                         } else //If the robot's current orientation isn't greater than 0
                         {
                             telemetry.addData("Target Error +", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
                             telemetry.update(); //Updates telemetry
-                            drive.OrientationDrive(Math.abs(targetError), driveStyle.PIVOT_RIGHT, 0.3, motors, imu); //Moves robot to correct orientation
+                            drive.OrientationDrive(Math.abs(targetError), driveStyle.PIVOT_RIGHT, 0.5, motors, imu); //Moves robot to correct orientation
                         }
                     }
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
                     telemetry.addData("Target Error", targetError);
                     telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction
                     telemetry.update(); //Updates telemetry
+                    sleep(stepSleep);
+                    drive.encoderDrive(1600, driveStyle.STRAFE_RIGHT, 1.0, motors);
 
                     break;
                 }
@@ -509,13 +513,13 @@ public class AutoRight extends LinearOpModeCamera {
 
                 case LEFT:
                 {
-                    drive.encoderDrive(2000, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
+                    drive.encoderDrive(2200, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
                     break;
                 }
 
                 case RIGHT:
                 {
-                    drive.encoderDrive(2300, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
+                    drive.encoderDrive(2100, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
                     break;
                 }
             }
@@ -543,14 +547,15 @@ public class AutoRight extends LinearOpModeCamera {
                 //Orients robot so it is close to parallel with the perimeter wall
                 //drive.OrientationDrive(40, driveStyle.PIVOT_LEFT, 0.3, motors, imu);
 
-                pivotValue = -35;
+                pivotValue = 35;
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
-                targetError = Math.abs((pivotValue + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)));
+                targetError = (pivotValue - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
                 telemetry.addData("Before Correction", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
                 telemetry.addData("Target Error", targetError);
                 telemetry.update();
+                //sleep(2500);
 
-                if (AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > (pivotValue + 3) || AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) < (pivotValue - 3)) {
+                if (AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > (pivotValue + 1) || AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) < (pivotValue - 1)) {
                     if (targetError > 0) //If the robot's current orientation is greater than 0
                     {
                         telemetry.addData("Expected Change 1", targetError);
@@ -574,7 +579,7 @@ public class AutoRight extends LinearOpModeCamera {
 
                 if(mineralPositions == MineralPositions.RIGHT)
                 {
-                    drive.encoderDrive(300, driveStyle.FORWARD, 0.3, motors);
+                    drive.encoderDrive(200, driveStyle.FORWARD, 0.3, motors);
                     sleep(stepSleep);
                     drive.encoderDrive(1700, driveStyle.STRAFE_LEFT, 0.6, motors);
                 }
@@ -587,14 +592,14 @@ public class AutoRight extends LinearOpModeCamera {
                 sleep(stepSleep);// wait till next step
 
                 //Corrects robots orientation to verify that it is parallel to the perimeter wall
-                pivotValue = 35;
+                /*pivotValue = 35;
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
-                targetError = (pivotValue + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+                targetError = (pivotValue - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
                 telemetry.addData("Before Correction", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
                 telemetry.addData("Target Error", targetError);
                 telemetry.update();
 
-                if (AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > (pivotValue + 3) || AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) < (pivotValue - 3)) {
+                if (AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > (pivotValue + 1) || AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) < (pivotValue - 1)) {
                     if (targetError > 0) //If the robot's current orientation is greater than 0
                     {
                         telemetry.addData("Expected Change 1", targetError);
@@ -602,7 +607,7 @@ public class AutoRight extends LinearOpModeCamera {
                         drive.OrientationDrive(Math.abs(targetError), driveStyle.PIVOT_LEFT, 0.5, motors, imu); //Moves robot to correct orientation
                     } else //If the robot's current orientation isn't greater than 0
                     {
-                        telemetry.addData("Expected Change 2", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+                        telemetry.addData("Expected Change 2", targetError);
                         telemetry.update(); //Updates telemetry
                         drive.OrientationDrive(Math.abs(targetError), driveStyle.PIVOT_RIGHT, 0.5, motors, imu); //Moves robot to correct orientation
                     }
@@ -613,9 +618,17 @@ public class AutoRight extends LinearOpModeCamera {
                 telemetry.update(); //Updates telemetry
 
                 sleep(stepSleep);
+                */
 
                 //Moves robot in or close to the crater
-                drive.encoderDrive(4000, driveStyle.FORWARD, 0.5, motors);
+                if(mineralPositions == MineralPositions.LEFT)
+                {
+                    drive.encoderDrive(3500, driveStyle.FORWARD, 0.5, motors);
+                }
+                else
+                {
+                    drive.encoderDrive(4000, driveStyle.FORWARD, 0.5, motors);
+                }
                 sleep(stepSleep);
                 //Moves robot a little bit to verify it is in the crater
                 drive.timeDrive(1000, 0.25, driveStyle.FORWARD, motors);

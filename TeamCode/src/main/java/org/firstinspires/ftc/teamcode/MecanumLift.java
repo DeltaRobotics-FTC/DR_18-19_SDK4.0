@@ -134,6 +134,9 @@ public class MecanumLift extends LinearOpMode
                 liftSpeed = 0.3;
             }
 
+
+
+
             //for mark 2 the arm and the armEXT for the robot
             //robot.Arm.setPower(armSpeed*gamepad2.left_stick_y);//arm
             //robot.armEXT.setPower(armSpeed*gamepad2 .right_stick_y);//armEXT
