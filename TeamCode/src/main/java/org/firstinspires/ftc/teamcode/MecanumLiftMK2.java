@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Created by User on 4/19/2018.
  */
 @TeleOp(name="MecanumLiftMK2",group = "")
+@Disabled
 public class MecanumLiftMK2 extends LinearOpMode
 {
     //Object for IMU sensor built into the Rev Module
@@ -23,7 +25,7 @@ public class MecanumLiftMK2 extends LinearOpMode
     Orientation angles;
 
     //Object of RobotHardware class that allows access to all the component of the robot
-    RobotHardware robot = new RobotHardware();
+    RobotHardware_MK2 robot = new RobotHardware_MK2();
 
     //Object of the Drive class so we can move the robot easily with one line of code
     Drive_MK2 drive = new Drive_MK2();
