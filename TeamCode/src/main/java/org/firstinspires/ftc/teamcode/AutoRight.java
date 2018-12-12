@@ -487,6 +487,7 @@ public class AutoRight extends LinearOpModeCamera {
                             drive.OrientationDrive(Math.abs(targetError), driveStyle.PIVOT_RIGHT, 0.5, motors, imu); //Moves robot to correct orientation
                         }
                     }
+
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
                     telemetry.addData("Target Error", targetError);
                     telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction

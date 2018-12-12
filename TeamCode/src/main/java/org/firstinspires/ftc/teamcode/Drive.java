@@ -372,21 +372,29 @@ public class Drive extends LinearOpMode
         motors[3].setPower(setPower(-motorPower, 0, 0)[3]);
 
     }
-    public void OrientationDrive(double orientationTargetDelta, driveStyle drive, double motorPower, DcMotor[] motors, BNO055IMU imu)
+    public void OrientationDrive(double TargetOr, driveStyle drive, double motorPower, DcMotor[] motors, BNO055IMU imu)
     {
         Orientation angles;
         angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+
+    `   double PivotDeg = 0;
+        PivotDeg = (TargetOr - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+
+         if (AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > (TargetOr + 1) || AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) < (TargetOr - 1)) {
+                        if (PivotDeg > 0) //If the robot's current orientation is greater than 0
+
+
 
         switch(drive) {
             case PIVOT_LEFT: {
                 double target = 0;
                 if(AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > 0)
                 {
-                    target = orientationTargetDelta - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
+                    target = TargetOr - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
                 }
                 else
                 {
-                    target = orientationTargetDelta + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
+                    target = TargetOr + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
                 }
                 pivotLeft(motorPower, motors);
 
