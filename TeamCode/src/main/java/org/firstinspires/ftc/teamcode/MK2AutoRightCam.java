@@ -6,6 +6,7 @@ import android.graphics.Color;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -22,6 +23,7 @@ import for_camera_opmodes.LinearOpModeCamera;
 
 
 @Autonomous(name="MK2AutoRightCam",group = "")
+@Disabled
 public class MK2AutoRightCam extends LinearOpModeCamera {
     RobotHardware_MK2 robot = new RobotHardware_MK2();
     BNO055IMU imu;

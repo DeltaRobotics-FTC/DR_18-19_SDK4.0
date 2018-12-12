@@ -435,7 +435,7 @@ public class AutoRight extends LinearOpModeCamera {
 
                 case LEFT:
                 {
-                    drive.encoderDrive(1650, driveStyle.STRAFE_LEFT, 0.8, motors);
+                    drive.encoderDrive(1500, driveStyle.STRAFE_LEFT, 0.8, motors);
                     sleep(stepSleep);
                     pivotValue = 25;
                     angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
@@ -623,7 +623,8 @@ public class AutoRight extends LinearOpModeCamera {
                 //Moves robot in or close to the crater
                 if(mineralPositions == MineralPositions.LEFT)
                 {
-                    drive.encoderDrive(3500, driveStyle.FORWARD, 0.5, motors);
+                    //drive.encoderDrive(3500, driveStyle.FORWARD, 0.5, motors);
+                    drive.timeDrive(4000, 0.5, driveStyle.FORWARD, motors);
                 }
                 else
                 {

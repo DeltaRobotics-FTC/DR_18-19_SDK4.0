@@ -3,12 +3,14 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import for_camera_opmodes.CameraPreview;
 import for_camera_opmodes.LinearOpModeCamera;
 
 @TeleOp (name = "NewCamera Testing", group = "")
+@Disabled
 public class NewCameraTesting extends LinearOpModeCamera
 {
     Drive drive = new Drive();
