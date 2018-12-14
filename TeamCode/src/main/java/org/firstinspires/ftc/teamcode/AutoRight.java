@@ -428,7 +428,10 @@ public class AutoRight extends LinearOpModeCamera {
             telemetry.update(); //Updates telemetry
             */
 
-            drive.OrientationDrive(0, 0.5, motors, imu);
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            telemetry.addData("Before Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+            drive.OrientationDrive(0, 0.4, motors, imu);
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction
             telemetry.update();
             sleep(2500);
@@ -474,6 +477,7 @@ public class AutoRight extends LinearOpModeCamera {
                     telemetry.update(); //Updates telemetry
                     */
                     drive.OrientationDrive(25, 0.5, motors, imu);
+                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                     telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction
                     telemetry.update();
                     sleep(2500);
@@ -509,13 +513,18 @@ public class AutoRight extends LinearOpModeCamera {
                     telemetry.addData("Target Error", targetError);
                     telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction
                     telemetry.update(); //Updates telemetry
+
                     sleep(stepSleep);
-                    drive.encoderDrive(1600, driveStyle.STRAFE_RIGHT, 1.0, motors);
                     */
+
+
                     drive.OrientationDrive(-7, 0.5, motors, imu);
+                    angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                     telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction
                     telemetry.update();
                     sleep(2500);
+                    drive.encoderDrive(1600, driveStyle.STRAFE_RIGHT, 1.0, motors);
+
 
 
                     break;
@@ -598,6 +607,7 @@ public class AutoRight extends LinearOpModeCamera {
                 telemetry.update(); //Updates telemetry
                 */
                 drive.OrientationDrive(35, 0.5, motors, imu);
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction
                 telemetry.update();
                 sleep(2500);
@@ -650,7 +660,11 @@ public class AutoRight extends LinearOpModeCamera {
                 sleep(stepSleep);
                 */
 
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction
+                sleep(2500);
                 drive.OrientationDrive(35, 0.5, motors, imu);
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 telemetry.addData("After Move", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays robot's orientation after the orientation correction
                 telemetry.update();
                 sleep(2500);

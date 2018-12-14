@@ -372,6 +372,12 @@ public class Drive extends LinearOpMode
         motors[3].setPower(setPower(-motorPower, 0, 0)[3]);
 
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////                                                                                   ///
+    /////////WHEN THE ROBOT ORIENTATION CROSSES 180, CHANGES TO THE CODE WILL NEED TO TAKE PLACE.//
+    /////////                                                                                   ///
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+
     public void OrientationDrive(double TargetOr, double motorPower, DcMotor[] motors, BNO055IMU imu) {
         Orientation angles;
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -383,7 +389,7 @@ public class Drive extends LinearOpMode
         {
             pivotLeft(motorPower, motors);
 
-            while (PivotDeg < AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)) {
+            while (TargetOr > AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)) {
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 }
                     motors[0].setPower(setPower(0, 0, 0)[0]);
@@ -395,7 +401,7 @@ public class Drive extends LinearOpMode
                 {
                         pivotRight(motorPower, motors);
 
-                        while (PivotDeg > AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)) {
+                        while (TargetOr < AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)) {
                             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                         }
 
