@@ -97,7 +97,7 @@ public class AutoRight extends LinearOpModeCamera {
                 waitForStart();
 
                 //Lower robot to ground
-                robot.motorLift.setPower(1.0);
+                /*robot.motorLift.setPower(1.0);
                 while (robot.motorLift.getCurrentPosition() <= 11117) {
                     telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                     telemetry.update();
@@ -105,6 +105,7 @@ public class AutoRight extends LinearOpModeCamera {
                 robot.motorLift.setPower(0);
 
                 sleep(stepSleep);
+                */
 
 
                 if (imageReady()) {
