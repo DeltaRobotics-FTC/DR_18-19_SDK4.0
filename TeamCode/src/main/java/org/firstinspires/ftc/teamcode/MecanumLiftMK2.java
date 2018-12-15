@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Created by User on 4/19/2018.
  */
 @TeleOp(name="MecanumLiftMK2",group = "")
-@Disabled
+//@Disabled
 public class MecanumLiftMK2 extends LinearOpMode
 {
     //Object for IMU sensor built into the Rev Module

@@ -365,64 +365,41 @@ public class Drive_MK2 extends LinearOpMode
         motors[3].setPower(setPower(-motorPower, 0, 0)[3]);
 
     }
-    public void OrientationDrive(double orientationTargetDelta, driveStyle drive, double motorPower, DcMotor[] motors, BNO055IMU imu)
-    {
+    public void OrientationDrive(double TargetOr, double motorPower, DcMotor[] motors, BNO055IMU imu) {
         Orientation angles;
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
-        switch(drive) {
-            case PIVOT_LEFT: {
-                double target = 0;
-                if(AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) > 0)
-                {
-                    target = orientationTargetDelta - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
-                }
-                else
-                {
-                    target = orientationTargetDelta + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
-                }
-                pivotLeft(motorPower, motors);
+        double PivotDeg = 0;
+        PivotDeg = (TargetOr - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
 
-                while(target > AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle))
-                {
-                    angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                }
-                motors[0].setPower(setPower(0, 0, 0)[0]);
-                motors[1].setPower(setPower(0, 0, 0)[1]);
-                motors[2].setPower(setPower(0, 0, 0)[2]);
-                motors[3].setPower(setPower(0, 0, 0)[3]);
-                break;
+        if (PivotDeg > 0)
+        {
+            pivotLeft(motorPower, motors);
+
+            while (TargetOr > AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)) {
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            }
+            motors[0].setPower(setPower(0, 0, 0)[0]);
+            motors[1].setPower(setPower(0, 0, 0)[1]);
+            motors[2].setPower(setPower(0, 0, 0)[2]);
+            motors[3].setPower(setPower(0, 0, 0)[3]);
+        }
+        else
+        {
+            pivotRight(motorPower, motors);
+
+            while (TargetOr < AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)) {
+                angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
             }
 
-            case PIVOT_RIGHT: {
-                double target = 0;
-                if(AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle) <= 0)
-                {
-                    target = -orientationTargetDelta - AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
-                }
-                else
-                {
-                    target = -orientationTargetDelta + AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle);
-                }
-
-                pivotRight(motorPower, motors);
-
-                while(target < AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle))
-                {
-                    angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                }
-
-                motors[0].setPower(setPower(0, 0, 0)[0]);
-                motors[1].setPower(setPower(0, 0, 0)[1]);
-                motors[2].setPower(setPower(0, 0, 0)[2]);
-                motors[3].setPower(setPower(0, 0, 0)[3]);
-
-                break;
-            }
-
+            motors[0].setPower(setPower(0, 0, 0)[0]);
+            motors[1].setPower(setPower(0, 0, 0)[1]);
+            motors[2].setPower(setPower(0, 0, 0)[2]);
+            motors[3].setPower(setPower(0, 0, 0)[3]);
 
         }
     }
+
 
     public void forward(double motorPower, DcMotor[] motors)
     {
