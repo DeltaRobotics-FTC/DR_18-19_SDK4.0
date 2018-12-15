@@ -347,12 +347,12 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
                 sleep(stepSleep);
 
-                drive.encoderDrive(100, driveStyle.BACKWARD, 0.3, motors);
+                drive.encoderDrive(150, driveStyle.BACKWARD, 0.3, motors);
 
 
                 sleep(stepSleep);
                 //move to minarals
-                drive.encoderDrive(900, driveStyle.STRAFE_RIGHT, 0.3, motors); //Possibly delete
+                drive.encoderDrive(900, driveStyle.STRAFE_RIGHT, 0.7, motors); //Possibly delete
 
                 sleep(stepSleep);
 
