@@ -36,6 +36,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
     int stepSleep = 250;
     double targetError = 0;
     double pivotValue = 0;
+    double targetStrafe = 0;
 
 
     int mineralColorInt;
@@ -47,6 +48,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
     int yMin = 975;
     int yMax = 1175;
+
 
     public void runOpMode() {
 
@@ -64,7 +66,6 @@ public class MK2AutoRight extends LinearOpModeCamera {
         imu.initialize(parametersIMU); //Init IMU parameters (set above)
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES); //Gets current orientation of robot
         telemetry.addData("Init Orientation", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle)); //Displays initial orientation
-
             /*robot.motorRF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.motorRB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.motorLB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -188,12 +189,11 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
 
         //Makes the robot move away from the latch
-       drive.encoderDrive(30,driveStyle.BACKWARD,0.3, motors);
+       drive.encoderDrive(45, driveStyle.BACKWARD,0.3, motors);
 
         sleep(stepSleep);
 
         //turns the robot so it can take a picture of the right mineral
-        pivotValue = 20;
         drive.OrientationDrive(20,0.5,motors,imu);
 
 
@@ -347,23 +347,33 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
                 sleep(stepSleep);
 
-                drive.encoderDrive(150, driveStyle.BACKWARD, 0.3, motors);
-
+                drive.encoderDrive(200, driveStyle.BACKWARD, 0.3, motors);
 
                 sleep(stepSleep);
                 //move to minarals
-                drive.encoderDrive(900, driveStyle.STRAFE_RIGHT, 0.7, motors); //Possibly delete
+                //drive.encoderDrive(450, driveStyle.STRAFE_RIGHT, 0.7, motors); //Possibly delete
+                /*
 
                 sleep(stepSleep);
-
+                */
                 switch (mineralPositions) {
                     case CENTER: {
                         break;
                     }
 
                     case LEFT: {
-                        drive.encoderDrive(1650, driveStyle.STRAFE_RIGHT, 0.8, motors);
-
+                        //drive.encoderDrive(350, driveStyle.STRAFE_RIGHT, 0.8, motors);
+                        targetStrafe = robot.motorLB.getCurrentPosition() + 350 ;
+                        drive.strafeRight(0.7,motors);
+                        while (robot.motorLB.getCurrentPosition() < targetStrafe) {
+                            telemetry.addData("motorLB POS", robot.motorLB.getCurrentPosition());
+                            telemetry.addData("tarrget strafe", targetStrafe);
+                            telemetry.update();
+                        }
+                        robot.motorLB.setPower(0);
+                        robot.motorRB.setPower(0);
+                        robot.motorLF.setPower(0);
+                        robot.motorRF.setPower(0);
                         sleep(stepSleep);
 
                         drive.OrientationDrive(25,0.5,motors,imu);
@@ -389,17 +399,17 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
                 switch (mineralPositions) {
                     case CENTER: {
-                        drive.encoderDrive(2500, driveStyle.FORWARD, 0.3, motors);// moves the robot to the Depot
+                        drive.encoderDrive(2500, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
                         break;
                     }
 
                     case LEFT: {
-                        drive.encoderDrive(2000, driveStyle.FORWARD, 0.3, motors);// moves the robot to the Depot
+                        drive.encoderDrive(2000, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
                         break;
                     }
 
                     case RIGHT: {
-                        drive.encoderDrive(2800, driveStyle.FORWARD, 0.3, motors);// moves the robot to the Depot
+                        drive.encoderDrive(2800, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
                         break;
                     }
                 }
@@ -410,14 +420,14 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
 
                 //Sets the servo to the set drop position
-                robot.marker.setPosition(1.0);
+                //robot.marker.setPosition(1.0);
 
-                sleep(1500);//wait till next step
+                //sleep(1500);//wait till next step
 
                 //Set the servo to the set up position
-                robot.marker.setPosition(0.15);
+                //robot.marker.setPosition(0.15);
 
-                sleep(stepSleep);// wait till next step
+                //sleep(stepSleep);// wait till next step
 
                 //Moves robot away from the depot
                 drive.encoderDrive(550, driveStyle.BACKWARD, 0.3, motors);
@@ -433,7 +443,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
                 //Strafes towards the perimeter wall so robot will clear the minerals
 
-                if (mineralPositions == MineralPositions.RIGHT) {
+                if (mineralPositions == MineralPositions.LEFT) {
                     drive.encoderDrive(300, driveStyle.FORWARD, 0.3, motors);
                     sleep(stepSleep);
                     drive.encoderDrive(1600, driveStyle.STRAFE_LEFT, 0.6, motors);
