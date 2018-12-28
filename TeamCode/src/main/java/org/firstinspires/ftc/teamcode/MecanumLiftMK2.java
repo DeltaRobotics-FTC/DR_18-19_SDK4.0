@@ -34,7 +34,8 @@ public class MecanumLiftMK2 extends LinearOpMode
     double speed = 0.75;
     double liftSpeed = 0.5;
     double armSpeed = 0.5;
-
+    double tiltManuel = 0;
+    boolean collectionPivotAuto = false;
 
     public void runOpMode()
     {
@@ -135,6 +136,7 @@ public class MecanumLiftMK2 extends LinearOpMode
                 liftSpeed = 0.3;
             }
 
+            // the sweeper starts and stops using the left trigger and bumper
             if(gamepad2.left_bumper)
             {
                 robot.collectionSweeper.setPosition(1.0);
@@ -150,6 +152,7 @@ public class MecanumLiftMK2 extends LinearOpMode
                 robot.collectionSweeper.setPosition(0.5);
             }
 
+            //moves the gate with the right bumper and trigger
             if(gamepad2.right_bumper)
             {
                 robot.collectionGate.setPosition(0.2);
@@ -162,9 +165,33 @@ public class MecanumLiftMK2 extends LinearOpMode
 
             //for mark 2 the arm and the armEXT for the robot
             robot.Arm.setPower(armSpeed*gamepad2.left_stick_y);//arm
-            robot.armEXT.setPower(armSpeed*gamepad2 .right_stick_y);//armEXT
+            robot.armEXT.setPower(armSpeed*gamepad2.right_stick_y);//armEXT
 
-            robot.collectionPivot.setPosition(robot.collectionPivotStartPos + (robot.Arm.getCurrentPosition() * 0.0001));
+            //is collectionPivotAuto is true runs Auto code
+            if (collectionPivotAuto)
+                {robot.collectionPivot.setPosition(robot.collectionPivotStartPos + (robot.Arm.getCurrentPosition() * 0.0001)); }
+            else //if collectionPivotManuel is true it will set the tilt manuel to the desired position using Y for up and A for down
+            {
+                if (gamepad2.y) {
+                tiltManuel += 0.5;
+                }
+                if (gamepad2.a) {
+                tiltManuel -= 0.5;
+                }
+            robot.collectionPivot.setPosition(tiltManuel);
+            }
+
+
+
+            //changes pivot control from manuel to auto
+            if (gamepad2.x) {
+                collectionPivotAuto = true;
+            }
+
+            //changes pivot control from auto to manuel
+            if (gamepad2.b) {
+                collectionPivotAuto = false;
+            }
 
             //Sends data back to driver station
             /*telemetry.addData("Motor RF Power", robot.motorRF.getPower());
