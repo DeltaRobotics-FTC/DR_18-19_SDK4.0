@@ -34,8 +34,14 @@ public class MecanumLiftMK2 extends LinearOpMode
     double speed = 0.75;
     double liftSpeed = 0.5;
     double armSpeed = 0.5;
-    double tiltManuel = 0;
     boolean collectionPivotAuto = false;
+
+    final double SCALING_VALUE = 0.025;
+
+    final int ARM_MAX_POS = -6599;
+    final int ARM_MIN_POS = 2393;
+
+    final double PIVOT_MIN_POS = 0.65;
 
     public void runOpMode()
     {
@@ -65,6 +71,7 @@ public class MecanumLiftMK2 extends LinearOpMode
         robot.motorLF.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.motorLB.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         */
+        double tiltManuel = robot.collectionGate.getPosition();
 
 
         //Waits till the start button is pressed before moving on in the code
@@ -147,7 +154,7 @@ public class MecanumLiftMK2 extends LinearOpMode
                 robot.collectionSweeper.setPosition(0);
             }
 
-            if(gamepad2.back)
+            if(gamepad2.dpad_right)
             {
                 robot.collectionSweeper.setPosition(0.5);
             }
@@ -155,29 +162,35 @@ public class MecanumLiftMK2 extends LinearOpMode
             //moves the gate with the right bumper and trigger
             if(gamepad2.right_bumper)
             {
-                robot.collectionGate.setPosition(0.2);
+                robot.collectionGate.setPosition(1.0);
             }
 
             if(gamepad2.right_trigger > 0.5)
             {
-                robot.collectionGate.setPosition(0.75);
+                robot.collectionGate.setPosition(0.4);
             }
 
             //for mark 2 the arm and the armEXT for the robot
-            robot.Arm.setPower(armSpeed*gamepad2.left_stick_y);//arm
+            if(robot.Arm.getCurrentPosition() >= ARM_MAX_POS && robot.Arm.getCurrentPosition() <= ARM_MIN_POS)
+            {
+                robot.Arm.setPower(armSpeed*gamepad2.left_stick_y);//arm
+            }
             robot.armEXT.setPower(armSpeed*gamepad2.right_stick_y);//armEXT
 
             //is collectionPivotAuto is true runs Auto code
             if (collectionPivotAuto)
-                {robot.collectionPivot.setPosition(robot.collectionPivotStartPos + (robot.Arm.getCurrentPosition() * 0.0001)); }
+                {
+                    //robot.collectionPivot.setPosition(robot.collectionPivotStartPos + (robot.Arm.getCurrentPosition() * 0.0001));
+                    robot.collectionPivot.setPosition(((-SCALING_VALUE*(robot.Arm.getCurrentPosition()-ARM_MIN_POS))/1000)+PIVOT_MIN_POS);
+                }
             else //if collectionPivotManuel is true it will set the tilt manuel to the desired position using Y for up and A for down
-            {
-                if (gamepad2.y) {
-                tiltManuel += 0.5;
+                {
+                    if (gamepad2.y) {
+                    tiltManuel += 0.0005;
                 }
-                if (gamepad2.a) {
-                tiltManuel -= 0.5;
-                }
+                    if (gamepad2.a) {
+                        tiltManuel -= 0.0005;
+                    }
             robot.collectionPivot.setPosition(tiltManuel);
             }
 

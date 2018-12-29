@@ -48,7 +48,6 @@ public class RobotHardware_MK2
 
     public DigitalChannel liftLimitBottom = null;
 
-    public double collectionPivotStartPos = 0.5;
 
     /**
      * Blank constructor
@@ -96,8 +95,8 @@ public class RobotHardware_MK2
 
         marker.setPosition(0.15);
         collectionSweeper.setPosition(0.5);
-        collectionGate.setPosition(0.2);
-        collectionPivot.setPosition(collectionPivotStartPos);
+        collectionGate.setPosition(0.4);
+        collectionPivot.setPosition(0.7625);
 
         motorRF.setPower(0);//]
         motorLF.setPower(0);//] Stops the drive motors
