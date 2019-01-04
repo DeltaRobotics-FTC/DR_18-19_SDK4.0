@@ -100,7 +100,7 @@ public class MecanumLiftMK2 extends LinearOpMode
             // the sweeper starts and stops using the left trigger and bumper
             if(gamepad2.left_bumper)
             {
-                robot.collectionSweeper.setPosition(1.0);
+                robot.collectionSweeper.setPosition(0.5);
             }
 
             if(gamepad2.left_trigger > 0.5)
@@ -108,9 +108,9 @@ public class MecanumLiftMK2 extends LinearOpMode
                 robot.collectionSweeper.setPosition(0);
             }
 
-            if(gamepad2.dpad_right)
+            if(gamepad2.dpad_left)
             {
-                robot.collectionSweeper.setPosition(0.5);
+                robot.collectionSweeper.setPosition(1.0);
             }
 
             //moves the gate with the right bumper and trigger
