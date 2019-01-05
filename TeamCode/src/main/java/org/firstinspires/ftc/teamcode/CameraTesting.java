@@ -10,7 +10,6 @@ import for_camera_opmodes.CameraPreview;
 import for_camera_opmodes.LinearOpModeCamera;
 
 @TeleOp (name = "Camera Testing", group = "")
-@Disabled
 public class CameraTesting extends LinearOpModeCamera
 {
     Drive drive = new Drive();

@@ -7,6 +7,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -25,19 +26,23 @@ public class MecanumLiftMK2 extends LinearOpMode
     //Object of the Drive class so we can move the robot easily with one line of code
     Drive_MK2 drive = new Drive_MK2();
 
+    ElapsedTime runtime = new ElapsedTime();
+
     //Value the drive train motor power will be multiplied by to reduce the speed to make the robot more controllable
     double speed = 0.5;
     double armSpeed = 0.75;
-    boolean collectionPivotAuto = false;
+    //boolean collectionPivotAuto = false;
 
-    final double SCALING_VALUE = 0.02169;
+    //final double SCALING_VALUE = 0.02169;
 
-    final int ARM_MAX_POS = -6599;
-    final int ARM_MIN_POS = 2393;
+    //final int ARM_MAX_POS = -6599;
+    //final int ARM_MIN_POS = 2393;
 
-    final double PIVOT_MIN_POS = 0.65;
+    //final double PIVOT_MIN_POS = 0.65;
 
     double lastTiltManuel = 0;
+
+    double runtimeTarget = 0;
 
     public void runOpMode()
     {
@@ -47,6 +52,7 @@ public class MecanumLiftMK2 extends LinearOpMode
 
         double tiltManuel = robot.collectionPivot.getPosition();
 
+        telemetry.addData("Starting Time", runtime.startTime());
 
 
         //Waits till the start button is pressed before moving on in the code
@@ -122,6 +128,11 @@ public class MecanumLiftMK2 extends LinearOpMode
             if(gamepad2.right_trigger > 0.5)
             {
                 robot.collectionGate.setPosition(0.4);
+                runtimeTarget = runtime.milliseconds() + 4000;
+            }
+            if(runtime.milliseconds() >= runtimeTarget && robot.collectionGate.getPosition() > 0.45)
+            {
+                robot.collectionGate.setPosition(0.4);
             }
 
             //for mark 2 the arm and the armEXT for the robot
@@ -134,7 +145,7 @@ public class MecanumLiftMK2 extends LinearOpMode
             robot.armEXT.setPower(gamepad2.right_stick_y);//armEXT
 
             //is collectionPivotAuto is true runs Auto code
-            if (collectionPivotAuto)
+            /*if (collectionPivotAuto)
                 {
                   tiltManuel = ((SCALING_VALUE*(robot.Arm.getCurrentPosition()- ARM_MAX_POS))/1000)+PIVOT_MIN_POS;
                     //robot.collectionPivot.setPosition(((-SCALING_VALUE*(robot.Arm.getCurrentPosition()-ARM_MIN_POS))/1000)+PIVOT_MIN_POS);
@@ -148,6 +159,14 @@ public class MecanumLiftMK2 extends LinearOpMode
                         tiltManuel -= 0.002;
                     }
                     }
+                    */
+
+            if (gamepad2.y) {
+                tiltManuel += 0.002;
+            }
+            if (gamepad2.a) {
+                tiltManuel -= 0.002;
+            }
 
             if(lastTiltManuel != tiltManuel)
             {
@@ -157,7 +176,7 @@ public class MecanumLiftMK2 extends LinearOpMode
 
 
             //changes pivot control from manuel to auto
-            if (gamepad2.x) {
+            /*if (gamepad2.x) {
                 collectionPivotAuto = true;
             }
 
@@ -165,6 +184,7 @@ public class MecanumLiftMK2 extends LinearOpMode
             if (gamepad2.b) {
                 collectionPivotAuto = false;
             }
+            */
 
             lastTiltManuel = tiltManuel;
 
