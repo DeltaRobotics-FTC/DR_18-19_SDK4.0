@@ -58,18 +58,21 @@ public class MK2AutoUnhook extends LinearOpModeCamera
 
         waitForStart();
 
-         robot.motorLift.setPower(1.0);
-            while (robot.motorLift.getCurrentPosition() <= 40000) { //Was previously 11117
+         /*robot.motorLift.setPower(1.0);
+            while (robot.motorLift.getCurrentPosition() < 40000) { //Was previously 11117
                 telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                 telemetry.update();
             }
 
             robot.motorLift.setPower(0);
 
+            sleep(500);
 
-            sleep(SLEEP_TIME);
+            drive.timeDrive(125, 0.6, driveStyle.STRAFE_LEFT, motors);
 
-            drive.encoderDrive(45, driveStyle.BACKWARD,0.3, motors); //Robot orientation is forward
+            sleep(500);*/
+
+            drive.timeDrive(500,0.3, driveStyle.BACKWARD, motors); //Robot orientation is forward
 
             sleep(SLEEP_TIME);
 
