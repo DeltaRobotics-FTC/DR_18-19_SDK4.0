@@ -46,8 +46,8 @@ public class MK2AutoRight extends LinearOpModeCamera {
     int xMin = 250;
     int xMax = 625;
 
-    int yMin = 975;
-    int yMax = 1175;
+    int yMin = 1050;
+    int yMax = 1250;
 
 
     public void runOpMode() {
@@ -102,9 +102,9 @@ public class MK2AutoRight extends LinearOpModeCamera {
                 telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                 telemetry.update();
             }
-            robot.motorLift.setPower(0);*/
+            robot.motorLift.setPower(0);
 
-            sleep(stepSleep);
+            sleep(stepSleep);*/
 
             if (imageReady()) {
                 int redValueLeft = -76800;
@@ -194,116 +194,115 @@ public class MK2AutoRight extends LinearOpModeCamera {
         sleep(stepSleep);
 
         //turns the robot so it can take a picture of the right mineral
-        drive.OrientationDrive(20,0.5,motors,imu);
+        if(mineralPositions != MineralPositions.CENTER)
+        {
+            sleep(stepSleep);
+            //second picture
+            if(isCameraAvailable()) {
 
+                startCamera();
+                setCameraDownsampling(1);
+                if(imageReady()) {
+                    int redValueLeft = -76800;
+                    int blueValueLeft = -76800;
+                    int greenValueLeft = -76800;
 
-        sleep(stepSleep);
-         //second picture
-        if(isCameraAvailable() && !(mineralPositions == MineralPositions.CENTER)) {
+                    Bitmap rgbImage;
+                    //The last value must correspond to the downsampling value from above
+                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
-            startCamera();
-            setCameraDownsampling(1);
-            if(imageReady()) {
-                int redValueLeft = -76800;
-                int blueValueLeft = -76800;
-                int greenValueLeft = -76800;
+                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
-                Bitmap rgbImage;
-                //The last value must correspond to the downsampling value from above
-                rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                    xMax = 555;
+                    xMin = 0;
 
-                rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                    yMin = 925;
+                    yMax = 1175;
 
-                xMax = 845;
-                xMin = 290;
+                    for (int x = xMin; x <= xMax; x++) {
+                        for (int y = yMin; y <= yMax; y++) {
+                            if (x == xMax && y <= yMax) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                            }
+                            if (x <= xMax && y == yMin) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                            }
+                            if (x == xMin && y <= yMax) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                            }
+                            if (x <= xMax && y == yMax) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
 
-                yMin = 925;
-                yMax = 1175;
-
-                for (int x = xMin; x <= xMax; x++) {
-                    for (int y = yMin; y <= yMax; y++) {
-                        if (x == xMax && y <= yMax) {
-                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                        }
-                        if (x <= xMax && y == yMin) {
-                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                        }
-                        if (x == xMin && y <= yMax) {
-                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                        }
-                        if (x <= xMax && y == yMax) {
-                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-
+                            }
                         }
                     }
+
+
+                    SaveImage(rgbImage);
+
+
+
                 }
 
-
-                SaveImage(rgbImage);
-
-
-
+                stopCamera();
             }
 
-            stopCamera();
-        }
+            sleep(stepSleep);
+            //third picture
+            if(isCameraAvailable()) {
 
-        sleep(stepSleep);
-        //third picture
-        if(isCameraAvailable() && !(mineralPositions == MineralPositions.CENTER)) {
+                startCamera();
+                setCameraDownsampling(1);
+                if(imageReady()) {
+                    int redValueLeft = -76800;
+                    int blueValueLeft = -76800;
+                    int greenValueLeft = -76800;
 
-            startCamera();
-            setCameraDownsampling(1);
-            if(imageReady()) {
-                int redValueLeft = -76800;
-                int blueValueLeft = -76800;
-                int greenValueLeft = -76800;
+                    Bitmap rgbImage;
+                    //The last value must correspond to the downsampling value from above
+                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
-                Bitmap rgbImage;
-                //The last value must correspond to the downsampling value from above
-                rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
-                rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                    xMax = 845;
+                    xMin = 290;
 
-                xMax = 845;
-                xMin = 290;
+                    yMin = 1050;
+                    yMax = 1250;
 
-                yMin = 925;
-                yMax = 1175;
+                    for (int x = xMin; x <= xMax; x++) {
+                        for (int y = yMin; y <= yMax; y++) {
+                            if (x == xMax && y <= yMax) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                            }
+                            if (x <= xMax && y == yMin) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                            }
+                            if (x == xMin && y <= yMax) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                            }
+                            if (x <= xMax && y == yMax) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
 
-                for (int x = xMin; x <= xMax; x++) {
-                    for (int y = yMin; y <= yMax; y++) {
-                        if (x == xMax && y <= yMax) {
-                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                        }
-                        if (x <= xMax && y == yMin) {
-                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                        }
-                        if (x == xMin && y <= yMax) {
-                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                        }
-                        if (x <= xMax && y == yMax) {
-                            rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-
+                            }
                         }
                     }
-                }
 
 
-                SaveImage(rgbImage);
+                    SaveImage(rgbImage);
 
-                //Analyzing Jewel Color
-                for (int x = xMin; x < xMax; x++) {
-                    for (int y = yMin; y < yMax; y++) {
-                        int pixel = rgbImage.getPixel(x, y);
-                        redValueLeft += red(pixel);
-                        blueValueLeft += blue(pixel);
-                        greenValueLeft += green(pixel);
+                    //Analyzing Jewel Color
+                    for (int x = xMin; x < xMax; x++) {
+                        for (int y = yMin; y < yMax; y++) {
+                            int pixel = rgbImage.getPixel(x, y);
+                            redValueLeft += red(pixel);
+                            blueValueLeft += blue(pixel);
+                            greenValueLeft += green(pixel);
+                        }
                     }
-                }
-                redValueLeft = normalizePixels(redValueLeft);
-                blueValueLeft = normalizePixels(blueValueLeft);
-                greenValueLeft = normalizePixels(greenValueLeft);
+                    redValueLeft = normalizePixels(redValueLeft);
+                    blueValueLeft = normalizePixels(blueValueLeft);
+                    greenValueLeft = normalizePixels(greenValueLeft);
                         /*telemetry.addData("redValueLeft", redValueLeft);
                         telemetry.addData("blueValueLeft", blueValueLeft);
                         telemetry.addData("greenValueLeft", greenValueLeft);
@@ -312,157 +311,57 @@ public class MK2AutoRight extends LinearOpModeCamera {
                         telemetry.update();*/
 
 
-                mineralColorInt = highestColor(redValueLeft, blueValueLeft, greenValueLeft);
+                    mineralColorInt = highestColor(redValueLeft, blueValueLeft, greenValueLeft);
 
-                telemetry.addData("Mineral", mineralColorInt);
-                if (Math.abs((redValueLeft - blueValueLeft)) <= 5) {
-                    telemetry.addData("Mineral Color", "1 : Silver");
-                    telemetry.addData("Red", redValueLeft);
-                    telemetry.addData("Blue", blueValueLeft);
-                    telemetry.addData("Green", greenValueLeft);
-                    telemetry.addData("Red Blue Difference", Math.abs((redValueLeft - blueValueLeft)));
-                    mineralPositions = MineralPositions.RIGHT;
-                    telemetry.addData("Mineral Position", mineralPositions);
-                } else
-                {
-                    telemetry.addData("Mineral Color", "Gold");
-                    telemetry.addData("Red", redValueLeft);
-                    telemetry.addData("Blue", blueValueLeft);
-                    telemetry.addData("Green", greenValueLeft);
-                    mineralPositions = MineralPositions.LEFT;
-                    telemetry.addData("Mineral Position", mineralPositions);
+                    telemetry.addData("Mineral", mineralColorInt);
+                    if (Math.abs((redValueLeft - blueValueLeft)) <= 5) {
+                        telemetry.addData("Mineral Color", "1 : Silver");
+                        telemetry.addData("Red", redValueLeft);
+                        telemetry.addData("Blue", blueValueLeft);
+                        telemetry.addData("Green", greenValueLeft);
+                        telemetry.addData("Red Blue Difference", Math.abs((redValueLeft - blueValueLeft)));
+                        mineralPositions = MineralPositions.RIGHT;
+                        telemetry.addData("Mineral Position", mineralPositions);
+                    } else
+                    {
+                        telemetry.addData("Mineral Color", "Gold");
+                        telemetry.addData("Red", redValueLeft);
+                        telemetry.addData("Blue", blueValueLeft);
+                        telemetry.addData("Green", greenValueLeft);
+                        mineralPositions = MineralPositions.LEFT;
+                        telemetry.addData("Mineral Position", mineralPositions);
+                    }
+                    telemetry.update();
+                    sleep(stepSleep);
+
                 }
-                telemetry.update();
-                sleep(stepSleep);
 
+                stopCamera();
             }
-
-            stopCamera();
         }
 
 
+        drive.encoderDrive(100, driveStyle.STRAFE_LEFT, 0.8, motors);
 
-        //Orients robot to its starting orientation (from when it was hooked on lander). This makes sure we are oriented towards the mineral group and correct any errors in the orientation
-                drive.OrientationDrive(-90,0.5,motors,imu);
+        if(mineralPositions == MineralPositions.CENTER) {
+            drive.encoderDrive(90, driveStyle.FORWARD, 0.3, motors);
+            sleep(stepSleep);
+            drive.OrientationDrive(90, 0.5, motors, imu);
+            sleep(stepSleep);
+            drive.encoderDrive(725, driveStyle.FORWARD, 0.6, motors);
+            sleep(stepSleep);
+            drive.encoderDrive(100, driveStyle.BACKWARD, 0.6, motors);
+            sleep(stepSleep);
+            drive.OrientationDrive(130, 0.5, motors, imu);
+            sleep(stepSleep);
+            drive.timeDrive(1000, 0.8, driveStyle.STRAFE_RIGHT, motors);
+        }
 
-                sleep(stepSleep);
-
-                drive.encoderDrive(200, driveStyle.BACKWARD, 0.3, motors);
-
-                sleep(stepSleep);
-                //move to minarals
-                //drive.encoderDrive(450, driveStyle.STRAFE_RIGHT, 0.7, motors); //Possibly delete
-                /*
-
-                sleep(stepSleep);
-                */
-                switch (mineralPositions) {
-                    case CENTER: {
-                        break;
-                    }
-
-                    case LEFT: {
-                        //drive.encoderDrive(350, driveStyle.STRAFE_RIGHT, 0.8, motors);
-                        targetStrafe = robot.motorLB.getCurrentPosition() + 350 ;
-                        drive.strafeRight(0.7,motors);
-                        while (robot.motorLB.getCurrentPosition() < targetStrafe) {
-                            telemetry.addData("motorLB POS", robot.motorLB.getCurrentPosition());
-                            telemetry.addData("tarrget strafe", targetStrafe);
-                            telemetry.update();
-                        }
-                        robot.motorLB.setPower(0);
-                        robot.motorRB.setPower(0);
-                        robot.motorLF.setPower(0);
-                        robot.motorRF.setPower(0);
-                        sleep(stepSleep);
-
-                        drive.OrientationDrive(25,0.5,motors,imu);
-
-                        break;
-                    }
-
-                    case RIGHT: {
-                        drive.encoderDrive(1600, driveStyle.STRAFE_LEFT, 0.8, motors);
-
-                        sleep(stepSleep);
-
-                        drive.OrientationDrive(-15,0.5,motors,imu);
-
-                        break;
-                    }
-                }
-
-                sleep(stepSleep);
-
-                //Moves robot into the depot, knocking off the middle mineral
-                //drive.encoderDrive(1250, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
-
-                switch (mineralPositions) {
-                    case CENTER: {
-                        drive.encoderDrive(2500, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
-                        break;
-                    }
-
-                    case LEFT: {
-                        drive.encoderDrive(2000, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
-                        break;
-                    }
-
-                    case RIGHT: {
-                        drive.encoderDrive(2800, driveStyle.BACKWARD, 0.3, motors);// moves the robot to the Depot
-                        break;
-                    }
-                }
-
-                sleep(stepSleep);// wait till next step
-
-                //Moves robot into the depot, knocking off the middle mineral
+        //Drop marker
 
 
-                //Sets the servo to the set drop position
-                //robot.marker.setPosition(1.0);
 
-                //sleep(1500);//wait till next step
 
-                //Set the servo to the set up position
-                //robot.marker.setPosition(0.15);
-
-                //sleep(stepSleep);// wait till next step
-
-                //Moves robot away from the depot
-                drive.encoderDrive(550, driveStyle.BACKWARD, 0.3, motors);
-
-                sleep(stepSleep);// wait till next step
-
-                //Orients robot so it is close to parallel with the perimeter wall
-                //drive.OrientationDrive(40, driveStyle.PIVOT_LEFT, 0.3, motors, imu);
-
-                drive.OrientationDrive(-35, 0.5, motors, imu);
-
-                sleep(stepSleep);// wait till next step
-
-                //Strafes towards the perimeter wall so robot will clear the minerals
-
-                if (mineralPositions == MineralPositions.LEFT) {
-                    drive.encoderDrive(300, driveStyle.FORWARD, 0.3, motors);
-                    sleep(stepSleep);
-                    drive.encoderDrive(1600, driveStyle.STRAFE_LEFT, 0.6, motors);
-                } else {
-                    drive.encoderDrive(1100, driveStyle.STRAFE_LEFT, 0.6, motors);
-                }
-
-                sleep(stepSleep);// wait till next step
-
-                //Corrects robots orientation to verify that it is parallel to the perimeter wall
-                drive.OrientationDrive(35,0.5, motors, imu);
-
-                sleep(stepSleep);
-
-                //Moves robot in or close to the crater
-                drive.encoderDrive(4000, driveStyle.FORWARD, 0.5, motors);
-                sleep(stepSleep);
-                //Moves robot a little bit to verify it is in the crater
-                drive.timeDrive(1000, 0.25, driveStyle.FORWARD, motors);
 
 
         }
