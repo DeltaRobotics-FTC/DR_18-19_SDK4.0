@@ -213,7 +213,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
                     rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
-                    xMax = 555;
+                    xMax = 300;
                     xMin = 0;
 
                     yMin = 925;
@@ -264,11 +264,11 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
                     rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
-                    xMax = 845;
-                    xMin = 290;
+                    xMax = 300;
+                    xMin = 0;
 
-                    yMin = 1050;
-                    yMax = 1250;
+                    yMin = 925;
+                    yMax = 1175;
 
                     for (int x = xMin; x <= xMax; x++) {
                         for (int y = yMin; y <= yMax; y++) {
@@ -346,23 +346,42 @@ public class MK2AutoRight extends LinearOpModeCamera {
         if(mineralPositions == MineralPositions.CENTER) {
             drive.encoderDrive(90, driveStyle.FORWARD, 0.3, motors);
             sleep(stepSleep);
-            drive.OrientationDrive(90, 0.5, motors, imu);
+            drive.OrientationDrive(-80, 0.5, motors, imu);
             sleep(stepSleep);
-            drive.encoderDrive(725, driveStyle.FORWARD, 0.6, motors);
-            sleep(stepSleep);
-            drive.encoderDrive(100, driveStyle.BACKWARD, 0.6, motors);
-            sleep(stepSleep);
-            drive.OrientationDrive(130, 0.5, motors, imu);
-            sleep(stepSleep);
-            drive.timeDrive(1000, 0.8, driveStyle.STRAFE_RIGHT, motors);
+            drive.encoderDrive(725, driveStyle.BACKWARD, 0.6, motors);
         }
 
+        if(mineralPositions == MineralPositions.LEFT)
+        {
+            drive.encoderDrive(90, driveStyle.BACKWARD, 0.3, motors);
+            sleep(stepSleep);
+            drive.OrientationDrive(-115, 0.5, motors, imu);
+            sleep(stepSleep);
+            drive.encoderDrive(800, driveStyle.BACKWARD, 0.6, motors);
+        }
+
+        sleep(stepSleep);
+        drive.encoderDrive(100, driveStyle.FORWARD, 0.6, motors);
+        sleep(stepSleep);
+        drive.OrientationDrive(-50, 0.5, motors, imu);
+        sleep(stepSleep);
+        drive.timeDrive(750, 0.8, driveStyle.STRAFE_LEFT, motors);
+
         //Drop marker
+        sleep(stepSleep);
+        robot.marker.setPosition(1.0);
+        sleep(1000);
+        robot.marker.setPosition(0.15);
 
-
-
-
-
-
+        if(mineralPositions == MineralPositions.CENTER)
+        {
+            drive.encoderDrive(850, driveStyle.FORWARD, 0.8, motors);
+        }
+        if(mineralPositions == MineralPositions.LEFT)
+        {
+            drive.encoderDrive(950, driveStyle.FORWARD, 0.8, motors);
+        }
+        sleep(stepSleep);
+       drive.timeDrive(1000, 0.3, driveStyle.FORWARD, motors);
         }
     }
