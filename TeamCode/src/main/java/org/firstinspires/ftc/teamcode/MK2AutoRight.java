@@ -46,8 +46,8 @@ public class MK2AutoRight extends LinearOpModeCamera {
     int xMin = 250;
     int xMax = 625;
 
-    int yMin = 1050;
-    int yMax = 1250;
+    int yMin = 925;
+    int yMax = 1175;
 
 
     public void runOpMode() {
@@ -97,14 +97,14 @@ public class MK2AutoRight extends LinearOpModeCamera {
             waitForStart();
 
             //Lower robot to ground
-            /*robot.motorLift.setPower(1.0);
-            while (robot.motorLift.getCurrentPosition() <= 11117) {
+            robot.motorLift.setPower(1.0);
+            while (robot.motorLift.getCurrentPosition() <= 11215) {
                 telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                 telemetry.update();
             }
             robot.motorLift.setPower(0);
 
-            sleep(stepSleep);*/
+            sleep(stepSleep);
 
             if (imageReady()) {
                 int redValueLeft = -76800;
@@ -189,7 +189,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
 
         //Makes the robot move away from the latch
-       drive.encoderDrive(45, driveStyle.BACKWARD,0.3, motors);
+       drive.encoderDrive(90, driveStyle.BACKWARD,0.3, motors);
 
         sleep(stepSleep);
 
@@ -341,10 +341,12 @@ public class MK2AutoRight extends LinearOpModeCamera {
         }
 
 
-        drive.encoderDrive(100, driveStyle.STRAFE_LEFT, 0.8, motors);
+
 
         if(mineralPositions == MineralPositions.CENTER) {
-            drive.encoderDrive(90, driveStyle.FORWARD, 0.3, motors);
+            drive.encoderDrive(100, driveStyle.STRAFE_LEFT, 0.8, motors);
+            sleep(stepSleep);
+            drive.encoderDrive(105, driveStyle.FORWARD, 0.3, motors);
             sleep(stepSleep);
             drive.OrientationDrive(-80, 0.5, motors, imu);
             sleep(stepSleep);
@@ -353,11 +355,13 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
         if(mineralPositions == MineralPositions.LEFT)
         {
-            drive.encoderDrive(90, driveStyle.BACKWARD, 0.3, motors);
+            drive.encoderDrive(280, driveStyle.STRAFE_LEFT, 0.8, motors);
             sleep(stepSleep);
-            drive.OrientationDrive(-115, 0.5, motors, imu);
+            drive.encoderDrive(150, driveStyle.BACKWARD, 0.6, motors);
             sleep(stepSleep);
-            drive.encoderDrive(800, driveStyle.BACKWARD, 0.6, motors);
+            drive.OrientationDrive(-100, 0.5, motors, imu);
+            sleep(stepSleep);
+            drive.encoderDrive(700, driveStyle.BACKWARD, 0.6, motors);
         }
 
         sleep(stepSleep);
