@@ -98,7 +98,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
             //Lower robot to ground
             robot.motorLift.setPower(1.0);
-            while (robot.motorLift.getCurrentPosition() <= 11215) {
+            while (robot.motorLift.getCurrentPosition() <= 11100) {
                 telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                 telemetry.update();
             }
@@ -364,12 +364,31 @@ public class MK2AutoRight extends LinearOpModeCamera {
             drive.encoderDrive(700, driveStyle.BACKWARD, 0.6, motors);
         }
 
+        if(mineralPositions == MineralPositions.RIGHT)
+        {
+            drive.encoderDrive(280, driveStyle.STRAFE_LEFT, 0.8, motors);
+            sleep(stepSleep);
+            drive.encoderDrive(400, driveStyle.FORWARD, 0.6, motors);
+            sleep(stepSleep);
+            drive.OrientationDrive(-60, 0.5, motors, imu);
+            sleep(stepSleep);
+            drive.encoderDrive(700, driveStyle.BACKWARD, 0.6, motors);
+        }
+
         sleep(stepSleep);
         drive.encoderDrive(100, driveStyle.FORWARD, 0.6, motors);
         sleep(stepSleep);
         drive.OrientationDrive(-50, 0.5, motors, imu);
         sleep(stepSleep);
-        drive.timeDrive(750, 0.8, driveStyle.STRAFE_LEFT, motors);
+        if(mineralPositions == MineralPositions.RIGHT)
+        {
+            drive.timeDrive(200, 0.8, driveStyle.STRAFE_LEFT, motors);
+        }
+        else
+        {
+            drive.timeDrive(750, 0.8, driveStyle.STRAFE_LEFT, motors);
+        }
+
 
         //Drop marker
         sleep(stepSleep);
@@ -384,6 +403,10 @@ public class MK2AutoRight extends LinearOpModeCamera {
         if(mineralPositions == MineralPositions.LEFT)
         {
             drive.encoderDrive(950, driveStyle.FORWARD, 0.8, motors);
+        }
+        if(mineralPositions == MineralPositions.RIGHT)
+        {
+            drive.encoderDrive(850, driveStyle.FORWARD, 0.8, motors);
         }
         sleep(stepSleep);
        drive.timeDrive(1000, 0.3, driveStyle.FORWARD, motors);

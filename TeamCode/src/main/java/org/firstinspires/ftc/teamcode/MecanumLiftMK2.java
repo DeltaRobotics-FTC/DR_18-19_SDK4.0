@@ -7,6 +7,8 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -22,12 +24,14 @@ public class MecanumLiftMK2 extends LinearOpMode
     //Object of RobotHardware class that allows access to all the component of the robot
     RobotHardware_MK2 robot = new RobotHardware_MK2();
 
+    ElapsedTime runtime = new ElapsedTime();
+
     //Object of the Drive class so we can move the robot easily with one line of code
     Drive_MK2 drive = new Drive_MK2();
 
     //Value the drive train motor power will be multiplied by to reduce the speed to make the robot more controllable
-    double speed = 0.5;
-    double armSpeed = 0.75;
+    double speed = 0.6;
+    double armSpeed = 0.85;
     boolean collectionPivotAuto = false;
 
     final double SCALING_VALUE = 0.02169;
@@ -35,9 +39,23 @@ public class MecanumLiftMK2 extends LinearOpMode
     final int ARM_MAX_POS = -6599;
     final int ARM_MIN_POS = 2393;
 
+    final int ARM_EXT_SCORE = -6148;
+    final double PIVOT_SCORE = 0.338;
+    final double PIVOT_COLLECT = 0.174;
+    final int ARM_COLLECT = 1627;
+    final int ARM_SCORE = -5967;
+    final int ARM_TRAVEL = -1757;
+    final double PIVOT_TRAVEL = 0.2;
+
     final double PIVOT_MIN_POS = 0.65;
 
     double lastTiltManuel = 0;
+
+    double runtimeTarget = 0;
+
+    boolean dPadUpState = false;
+    boolean dPadDownState = false;
+    boolean dPadLeftState = false;
 
     public void runOpMode()
     {
@@ -45,11 +63,18 @@ public class MecanumLiftMK2 extends LinearOpMode
         //Inits robot hardware
         robot.init(hardwareMap);
 
+        robot.Arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.armEXT.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.Arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.armEXT.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         double tiltManuel = robot.collectionPivot.getPosition();
 
 
 
         //Waits till the start button is pressed before moving on in the code
+
+        telemetry.addData("Starting Time", runtime.milliseconds());
         waitForStart();
         while (opModeIsActive())
         {
@@ -106,9 +131,10 @@ public class MecanumLiftMK2 extends LinearOpMode
             if(gamepad2.left_trigger > 0.5)
             {
                 robot.collectionSweeper.setPosition(0);
+                robot.collectionGate.setPosition(0.4);
             }
 
-            if(gamepad2.dpad_left)
+            if(gamepad2.dpad_right)
             {
                 robot.collectionSweeper.setPosition(1.0);
             }
@@ -166,6 +192,236 @@ public class MecanumLiftMK2 extends LinearOpMode
                 collectionPivotAuto = false;
             }
 
+            //Scoring
+            if(gamepad2.dpad_up && !dPadUpState)
+            {
+                dPadUpState = true;
+
+                //Arm Extension
+                if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE - 100 && robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE + 100)
+                {
+                    // in range, no action
+                }
+                else if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                {// arm too low, move out
+                    robot.armEXT.setPower(-0.7);
+                    while(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                    {
+
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Ext Pos", robot.armEXT.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                else if(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                {// arm too high, move in
+                    robot.armEXT.setPower(0.5);
+                    while(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                    {
+
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Ext Pos", robot.armEXT.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                robot.armEXT.setPower(0);
+
+
+                //Arm
+                if(robot.Arm.getCurrentPosition() <= ARM_SCORE + 100)
+                {
+                    // in range, no action
+                }
+                else if(robot.Arm.getCurrentPosition() >= ARM_SCORE)
+                {// arm too low, move up
+                    robot.Arm.setPower(-0.7);
+                    while(robot.Arm.getCurrentPosition() >= ARM_SCORE)
+                    {
+
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Pos", robot.Arm.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                robot.Arm.setPower(0);
+                tiltManuel = PIVOT_SCORE;
+                robot.collectionPivot.setPosition(tiltManuel);
+            }
+            else if(!gamepad2.dpad_up)
+            {
+                dPadUpState = false;
+            }
+
+            //Travel
+            if(gamepad2.dpad_left && !dPadLeftState)
+            {
+                dPadLeftState = true;
+
+                //Arm
+                if(robot.Arm.getCurrentPosition() >= ARM_TRAVEL - 100 && robot.Arm.getCurrentPosition() <= ARM_TRAVEL + 100)
+                {
+                    // in range, no action
+                }
+                else if(robot.Arm.getCurrentPosition() >= ARM_TRAVEL)
+                {// arm too low, move up
+                    robot.Arm.setPower(-0.9);
+                    while(robot.Arm.getCurrentPosition() >= ARM_TRAVEL)
+                    {
+
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Pos", robot.Arm.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                else if(robot.Arm.getCurrentPosition() <= ARM_TRAVEL)
+                {// arm too high, move down
+                    robot.Arm.setPower(0.9);
+                    while(robot.Arm.getCurrentPosition() <= ARM_TRAVEL)
+                    {
+
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Pos", robot.Arm.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                robot.Arm.setPower(0);
+
+                //Arm Extension
+                if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE - 100 && robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE + 100)
+                {
+                    // in range, no action
+                }
+                else if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                {// arm too low, move out
+                    robot.armEXT.setPower(-0.9);
+                    while(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                    {
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Ext Pos", robot.armEXT.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                else if(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                {// arm too high, move in
+                    robot.armEXT.setPower(0.7);
+                    while(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                    {
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Ext Pos", robot.armEXT.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                robot.armEXT.setPower(0);
+
+                tiltManuel = PIVOT_TRAVEL;
+                robot.collectionPivot.setPosition(tiltManuel);
+            }
+            else if(!gamepad2.dpad_left)
+            {
+                dPadLeftState = false;
+            }
+
+            //Collection
+            if(gamepad2.dpad_down && !dPadDownState)
+            {
+                dPadDownState = true;
+                tiltManuel = PIVOT_COLLECT;
+                robot.collectionPivot.setPosition(tiltManuel);
+
+                //Arm Extension
+                if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE - 100 && robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE + 100)
+                {
+                    // in range, no action
+                }
+                else if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                {// arm too low, move out
+                    robot.armEXT.setPower(-0.7);
+                    while(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                    {
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Ext Pos", robot.armEXT.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                else if(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                {// arm too high, move in
+                    robot.armEXT.setPower(0.5);
+                    while(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                    {
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Ext Pos", robot.armEXT.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                robot.armEXT.setPower(0);
+
+                //Arm
+                if(robot.Arm.getCurrentPosition() >= ARM_COLLECT - 100 && robot.Arm.getCurrentPosition() <= ARM_COLLECT + 100)
+                {
+                    // in range, no action
+                }
+                else if(robot.Arm.getCurrentPosition() >= ARM_COLLECT)
+                {// arm too low, move up
+                    robot.Arm.setPower(-0.7);
+                    while(robot.Arm.getCurrentPosition() >= ARM_COLLECT)
+                    {
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Pos", robot.Arm.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                else if(robot.Arm.getCurrentPosition() <= ARM_COLLECT)
+                {// arm too high, move down
+                    robot.Arm.setPower(0.7);
+                    while(robot.Arm.getCurrentPosition() <= ARM_COLLECT)
+                    {
+                        robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+                        robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+                        robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+                        robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("Arm Pos", robot.Arm.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+                robot.Arm.setPower(0);
+            }
+            else if(!gamepad2.dpad_down)
+            {
+                dPadDownState = false;
+            }
+
+
+
             lastTiltManuel = tiltManuel;
 
 
@@ -178,6 +434,7 @@ public class MecanumLiftMK2 extends LinearOpMode
             telemetry.addData("collectionPivot Pos", robot.collectionPivot.getPosition());
             telemetry.addData("collectionGate Pos", robot.collectionGate.getPosition());
             telemetry.addData("collectionSweeper Pos", robot.collectionSweeper.getPosition());
+            telemetry.addData("armExt Pos", robot.armEXT.getCurrentPosition());
 
 
             //Updates telemetry
