@@ -30,7 +30,7 @@ public class MecanumLiftMK2 extends LinearOpMode
     Drive_MK2 drive = new Drive_MK2();
 
     //Value the drive train motor power will be multiplied by to reduce the speed to make the robot more controllable
-    double speed = 0.6;
+    double speed = 0.7;
     double armSpeed = 0.85;
     boolean collectionPivotAuto = false;
 
@@ -39,13 +39,13 @@ public class MecanumLiftMK2 extends LinearOpMode
     final int ARM_MAX_POS = -6599;
     final int ARM_MIN_POS = 2393;
 
-    final int ARM_EXT_SCORE = -6148;
+    final int ARM_EXT_SCORE = -6500;
     final double PIVOT_SCORE = 0.338;
     final double PIVOT_COLLECT = 0.174;
     final int ARM_COLLECT = 1627;
     final int ARM_SCORE = -5967;
     final int ARM_TRAVEL = -1757;
-    final double PIVOT_TRAVEL = 0.2;
+    final double PIVOT_TRAVEL = 0.29;
 
     final double PIVOT_MIN_POS = 0.65;
 
@@ -113,13 +113,13 @@ public class MecanumLiftMK2 extends LinearOpMode
             //Sets the drive train speed to the "fast mode" when the X button is pressed
             if(gamepad1.x)
             {
-                speed = 0.5;
+                speed = 0.7;
             }
 
             //Sets the drive train speed to the "slow mode" when the B button is pressed
             if(gamepad1.b)
             {
-                speed = 0.2;
+                speed = 0.5;
             }
 
             // the sweeper starts and stops using the left trigger and bumper
