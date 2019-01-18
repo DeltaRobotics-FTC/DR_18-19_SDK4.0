@@ -40,7 +40,7 @@ public class MecanumLiftMK2 extends LinearOpMode
     final int ARM_MIN_POS = 2393;
 
     final int ARM_EXT_SCORE = -6500;
-    final double PIVOT_SCORE = 0.338;
+    final double PIVOT_SCORE = 0.325;
     final double PIVOT_COLLECT = 0.174;
     final int ARM_COLLECT = 1627;
     final int ARM_SCORE = -5967;
@@ -113,13 +113,13 @@ public class MecanumLiftMK2 extends LinearOpMode
             //Sets the drive train speed to the "fast mode" when the X button is pressed
             if(gamepad1.x)
             {
-                speed = 0.7;
+                speed = 0.6;
             }
 
             //Sets the drive train speed to the "slow mode" when the B button is pressed
             if(gamepad1.b)
             {
-                speed = 0.5;
+                speed = 0.4;
             }
 
             // the sweeper starts and stops using the left trigger and bumper
@@ -240,7 +240,7 @@ public class MecanumLiftMK2 extends LinearOpMode
                 }
                 else if(robot.Arm.getCurrentPosition() >= ARM_SCORE)
                 {// arm too low, move up
-                    robot.Arm.setPower(-0.7);
+                    robot.Arm.setPower(-1.0);
                     while(robot.Arm.getCurrentPosition() >= ARM_SCORE)
                     {
 
@@ -273,7 +273,7 @@ public class MecanumLiftMK2 extends LinearOpMode
                 }
                 else if(robot.Arm.getCurrentPosition() >= ARM_TRAVEL)
                 {// arm too low, move up
-                    robot.Arm.setPower(-0.9);
+                    robot.Arm.setPower(-1.0);
                     while(robot.Arm.getCurrentPosition() >= ARM_TRAVEL)
                     {
 
@@ -287,7 +287,7 @@ public class MecanumLiftMK2 extends LinearOpMode
                 }
                 else if(robot.Arm.getCurrentPosition() <= ARM_TRAVEL)
                 {// arm too high, move down
-                    robot.Arm.setPower(0.9);
+                    robot.Arm.setPower(1.0);
                     while(robot.Arm.getCurrentPosition() <= ARM_TRAVEL)
                     {
 
@@ -389,7 +389,7 @@ public class MecanumLiftMK2 extends LinearOpMode
                 }
                 else if(robot.Arm.getCurrentPosition() >= ARM_COLLECT)
                 {// arm too low, move up
-                    robot.Arm.setPower(-0.7);
+                    robot.Arm.setPower(-1.0);
                     while(robot.Arm.getCurrentPosition() >= ARM_COLLECT)
                     {
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
@@ -402,7 +402,7 @@ public class MecanumLiftMK2 extends LinearOpMode
                 }
                 else if(robot.Arm.getCurrentPosition() <= ARM_COLLECT)
                 {// arm too high, move down
-                    robot.Arm.setPower(0.7);
+                    robot.Arm.setPower(1.0);
                     while(robot.Arm.getCurrentPosition() <= ARM_COLLECT)
                     {
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
