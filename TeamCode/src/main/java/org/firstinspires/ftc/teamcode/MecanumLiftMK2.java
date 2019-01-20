@@ -43,7 +43,7 @@ public class MecanumLiftMK2 extends LinearOpMode
     final double PIVOT_SCORE = 0.325;
     final double PIVOT_COLLECT = 0.174;
     final int ARM_COLLECT = 1627;
-    final int ARM_SCORE = -5967;
+    final int ARM_SCORE = -7015;
     final int ARM_TRAVEL = -1757;
     final double PIVOT_TRAVEL = 0.29;
 
@@ -198,14 +198,14 @@ public class MecanumLiftMK2 extends LinearOpMode
                 dPadUpState = true;
 
                 //Arm Extension
-                if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE - 100 && robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE + 100)
+                if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE - 100 && robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE + 100 && !gamepad1.dpad_up)
                 {
                     // in range, no action
                 }
-                else if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                else if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE && !gamepad1.dpad_up)
                 {// arm too low, move out
                     robot.armEXT.setPower(-0.7);
-                    while(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                    while(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE && !gamepad1.dpad_up)
                     {
 
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
@@ -216,10 +216,10 @@ public class MecanumLiftMK2 extends LinearOpMode
                         telemetry.update();
                     }
                 }
-                else if(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                else if(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE && !gamepad1.dpad_up)
                 {// arm too high, move in
                     robot.armEXT.setPower(0.5);
-                    while(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                    while(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE && !gamepad1.dpad_up)
                     {
 
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
@@ -234,14 +234,14 @@ public class MecanumLiftMK2 extends LinearOpMode
 
 
                 //Arm
-                if(robot.Arm.getCurrentPosition() <= ARM_SCORE + 100)
+                if(robot.Arm.getCurrentPosition() <= ARM_SCORE + 100 && !gamepad1.dpad_up)
                 {
                     // in range, no action
                 }
-                else if(robot.Arm.getCurrentPosition() >= ARM_SCORE)
+                else if(robot.Arm.getCurrentPosition() >= ARM_SCORE && !gamepad1.dpad_up)
                 {// arm too low, move up
                     robot.Arm.setPower(-1.0);
-                    while(robot.Arm.getCurrentPosition() >= ARM_SCORE)
+                    while(robot.Arm.getCurrentPosition() >= ARM_SCORE && !gamepad1.dpad_up)
                     {
 
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
@@ -267,14 +267,14 @@ public class MecanumLiftMK2 extends LinearOpMode
                 dPadLeftState = true;
 
                 //Arm
-                if(robot.Arm.getCurrentPosition() >= ARM_TRAVEL - 100 && robot.Arm.getCurrentPosition() <= ARM_TRAVEL + 100)
+                if(robot.Arm.getCurrentPosition() >= ARM_TRAVEL - 100 && robot.Arm.getCurrentPosition() <= ARM_TRAVEL + 100 && !gamepad1.dpad_up)
                 {
                     // in range, no action
                 }
-                else if(robot.Arm.getCurrentPosition() >= ARM_TRAVEL)
+                else if(robot.Arm.getCurrentPosition() >= ARM_TRAVEL && !gamepad1.dpad_up)
                 {// arm too low, move up
                     robot.Arm.setPower(-1.0);
-                    while(robot.Arm.getCurrentPosition() >= ARM_TRAVEL)
+                    while(robot.Arm.getCurrentPosition() >= ARM_TRAVEL && !gamepad1.dpad_up)
                     {
 
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
@@ -285,10 +285,10 @@ public class MecanumLiftMK2 extends LinearOpMode
                         telemetry.update();
                     }
                 }
-                else if(robot.Arm.getCurrentPosition() <= ARM_TRAVEL)
+                else if(robot.Arm.getCurrentPosition() <= ARM_TRAVEL && !gamepad1.dpad_up)
                 {// arm too high, move down
                     robot.Arm.setPower(1.0);
-                    while(robot.Arm.getCurrentPosition() <= ARM_TRAVEL)
+                    while(robot.Arm.getCurrentPosition() <= ARM_TRAVEL && !gamepad1.dpad_up)
                     {
 
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
@@ -302,14 +302,14 @@ public class MecanumLiftMK2 extends LinearOpMode
                 robot.Arm.setPower(0);
 
                 //Arm Extension
-                if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE - 100 && robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE + 100)
+                if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE - 100 && robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE + 100 && !gamepad1.dpad_up)
                 {
                     // in range, no action
                 }
-                else if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                else if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE && !gamepad1.dpad_up)
                 {// arm too low, move out
                     robot.armEXT.setPower(-0.9);
-                    while(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                    while(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE && !gamepad1.dpad_up)
                     {
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
                         robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
@@ -319,10 +319,10 @@ public class MecanumLiftMK2 extends LinearOpMode
                         telemetry.update();
                     }
                 }
-                else if(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                else if(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE && !gamepad1.dpad_up)
                 {// arm too high, move in
                     robot.armEXT.setPower(0.7);
-                    while(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                    while(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE && !gamepad1.dpad_up)
                     {
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
                         robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
@@ -350,14 +350,14 @@ public class MecanumLiftMK2 extends LinearOpMode
                 robot.collectionPivot.setPosition(tiltManuel);
 
                 //Arm Extension
-                if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE - 100 && robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE + 100)
+                if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE - 100 && robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE + 100 && !gamepad1.dpad_up)
                 {
                     // in range, no action
                 }
-                else if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                else if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE && !gamepad1.dpad_up)
                 {// arm too low, move out
                     robot.armEXT.setPower(-0.7);
-                    while(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE)
+                    while(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE && !gamepad1.back)
                     {
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
                         robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
@@ -367,10 +367,10 @@ public class MecanumLiftMK2 extends LinearOpMode
                         telemetry.update();
                     }
                 }
-                else if(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                else if(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE && !gamepad1.dpad_up)
                 {// arm too high, move in
                     robot.armEXT.setPower(0.5);
-                    while(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE)
+                    while(robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE && !gamepad1.back)
                     {
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
                         robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
@@ -383,14 +383,14 @@ public class MecanumLiftMK2 extends LinearOpMode
                 robot.armEXT.setPower(0);
 
                 //Arm
-                if(robot.Arm.getCurrentPosition() >= ARM_COLLECT - 100 && robot.Arm.getCurrentPosition() <= ARM_COLLECT + 100)
+                if(robot.Arm.getCurrentPosition() >= ARM_COLLECT - 100 && robot.Arm.getCurrentPosition() <= ARM_COLLECT + 100 && !gamepad1.dpad_up)
                 {
                     // in range, no action
                 }
-                else if(robot.Arm.getCurrentPosition() >= ARM_COLLECT)
+                else if(robot.Arm.getCurrentPosition() >= ARM_COLLECT && !gamepad1.dpad_up)
                 {// arm too low, move up
                     robot.Arm.setPower(-1.0);
-                    while(robot.Arm.getCurrentPosition() >= ARM_COLLECT)
+                    while(robot.Arm.getCurrentPosition() >= ARM_COLLECT && !gamepad1.dpad_up)
                     {
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
                         robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
@@ -400,10 +400,10 @@ public class MecanumLiftMK2 extends LinearOpMode
                         telemetry.update();
                     }
                 }
-                else if(robot.Arm.getCurrentPosition() <= ARM_COLLECT)
+                else if(robot.Arm.getCurrentPosition() <= ARM_COLLECT && !gamepad1.dpad_up)
                 {// arm too high, move down
                     robot.Arm.setPower(1.0);
-                    while(robot.Arm.getCurrentPosition() <= ARM_COLLECT)
+                    while(robot.Arm.getCurrentPosition() <= ARM_COLLECT && !gamepad1.dpad_up)
                     {
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
                         robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);

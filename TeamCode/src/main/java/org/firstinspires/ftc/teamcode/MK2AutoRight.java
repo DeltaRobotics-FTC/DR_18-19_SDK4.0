@@ -98,7 +98,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
             //Lower robot to ground
             robot.motorLift.setPower(1.0);
-            while (robot.motorLift.getCurrentPosition() <= 11100) {
+            while (robot.motorLift.getCurrentPosition() <= 10000) {
                 telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                 telemetry.update();
             }
@@ -246,6 +246,56 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
                 stopCamera();
             }
+
+            if(isCameraAvailable()) {
+
+                startCamera();
+                setCameraDownsampling(1);
+                if(imageReady()) {
+                    int redValueLeft = -76800;
+                    int blueValueLeft = -76800;
+                    int greenValueLeft = -76800;
+
+                    Bitmap rgbImage;
+                    //The last value must correspond to the downsampling value from above
+                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+
+                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+
+                    xMax = 300;
+                    xMin = 0;
+
+                    yMin = 925;
+                    yMax = 1175;
+
+                    for (int x = xMin; x <= xMax; x++) {
+                        for (int y = yMin; y <= yMax; y++) {
+                            if (x == xMax && y <= yMax) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                            }
+                            if (x <= xMax && y == yMin) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                            }
+                            if (x == xMin && y <= yMax) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+                            }
+                            if (x <= xMax && y == yMax) {
+                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
+
+                            }
+                        }
+                    }
+
+
+                    SaveImage(rgbImage);
+
+
+
+                }
+
+                stopCamera();
+            }
+
 
             sleep(stepSleep);
             //third picture

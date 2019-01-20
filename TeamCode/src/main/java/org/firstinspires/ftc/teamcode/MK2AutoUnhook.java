@@ -31,7 +31,7 @@ public class MK2AutoUnhook extends LinearOpModeCamera
     RobotHardware_MK2 robot = new RobotHardware_MK2();
     Drive_MK2 drive = new Drive_MK2();
 
-    final int SLEEP_TIME = 250;
+    final int SLEEP_TIME = 500;
 
     public void runOpMode()
     {
@@ -58,25 +58,26 @@ public class MK2AutoUnhook extends LinearOpModeCamera
 
         waitForStart();
 
-         /*robot.motorLift.setPower(1.0);
-            while (robot.motorLift.getCurrentPosition() < 40000) { //Was previously 11117
+         robot.motorLift.setPower(1.0);
+            while (robot.motorLift.getCurrentPosition() < 10000) { //Was previously 11117
                 telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                 telemetry.update();
             }
 
             robot.motorLift.setPower(0);
 
-            sleep(500);
+            sleep(SLEEP_TIME);
 
-            drive.timeDrive(125, 0.6, driveStyle.STRAFE_LEFT, motors);
-
-            sleep(500);*/
-
-            drive.timeDrive(500,0.3, driveStyle.BACKWARD, motors); //Robot orientation is forward
+            //drive.timeDrive(500,0.3, driveStyle.BACKWARD, motors); //Robot orientation is forward
+            drive.encoderDrive(90, driveStyle.BACKWARD,0.3, motors);
 
             sleep(SLEEP_TIME);
 
             drive.encoderDrive(100, driveStyle.STRAFE_LEFT, 0.8, motors);
+
+            sleep(SLEEP_TIME);
+
+            drive.encoderDrive(105, driveStyle.FORWARD, 0.3, motors);
 
             sleep(SLEEP_TIME);
 
