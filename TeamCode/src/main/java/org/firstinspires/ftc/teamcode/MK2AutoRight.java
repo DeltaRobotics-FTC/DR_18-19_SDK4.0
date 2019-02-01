@@ -98,7 +98,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
             //Lower robot to ground
             robot.motorLift.setPower(1.0);
-            while (robot.motorLift.getCurrentPosition() <= 10000) {
+            while (robot.motorLift.getCurrentPosition() <= 10500) {
                 telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                 telemetry.update();
             }

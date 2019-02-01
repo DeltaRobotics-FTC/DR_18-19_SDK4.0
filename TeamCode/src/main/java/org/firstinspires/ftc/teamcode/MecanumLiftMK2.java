@@ -51,11 +51,17 @@ public class MecanumLiftMK2 extends LinearOpMode
 
     double lastTiltManuel = 0;
 
-    double runtimeTarget = 0;
-
     boolean dPadUpState = false;
     boolean dPadDownState = false;
     boolean dPadLeftState = false;
+
+    final int PIVOT_STEPS = 10;
+    double armStepTarget = 0;
+    double armEncDelta = 0;
+    double armStepIncr = 0;
+
+    double pivotStepIncr = 0;
+    double pivotDelta = 0;
 
     public void runOpMode()
     {
@@ -240,6 +246,7 @@ public class MecanumLiftMK2 extends LinearOpMode
                 }
                 else if(robot.Arm.getCurrentPosition() >= ARM_SCORE && !gamepad1.dpad_up)
                 {// arm too low, move up
+
                     robot.Arm.setPower(-1.0);
                     while(robot.Arm.getCurrentPosition() >= ARM_SCORE && !gamepad1.dpad_up)
                     {
@@ -273,14 +280,49 @@ public class MecanumLiftMK2 extends LinearOpMode
                 }
                 else if(robot.Arm.getCurrentPosition() >= ARM_TRAVEL && !gamepad1.dpad_up)
                 {// arm too low, move up
+
+                    armEncDelta = ARM_SCORE - robot.Arm.getCurrentPosition();
+                    armStepIncr = armEncDelta / PIVOT_STEPS;
+                    armStepTarget = robot.Arm.getCurrentPosition() + armStepTarget;
+                    pivotDelta = PIVOT_SCORE - tiltManuel;
+                    pivotStepIncr = pivotDelta / PIVOT_STEPS;
+
+                    telemetry.addData("BeforeMove","");
+                    telemetry.addData("armStepTarget", armStepTarget);
+                    telemetry.addData("armEncDelta", armEncDelta);
+                    telemetry.addData("armStepIncr", armStepIncr);
+                    telemetry.addData("pivotDelta", pivotDelta);
+                    telemetry.addData("pivotStepTarget", pivotStepIncr);
+                    telemetry.update();
+                    sleep(3500);
+
                     robot.Arm.setPower(-1.0);
                     while(robot.Arm.getCurrentPosition() >= ARM_TRAVEL && !gamepad1.dpad_up)
                     {
+                        if(armEncDelta > 0)
+                        {
+                            if(robot.Arm.getCurrentPosition() >= armStepTarget)
+                            {
+                               armStepTarget += armStepIncr;
+                               tiltManuel += pivotStepIncr;
+                                robot.collectionGate.setPosition(tiltManuel);
+                            }
+                        }
+                        else
+                        {
+                            if(robot.Arm.getCurrentPosition() <= armStepTarget)
+                            {
+                                armStepTarget += armStepIncr;
+                                tiltManuel += pivotStepIncr;
+                                robot.collectionGate.setPosition(tiltManuel);
+                            }
+                        }
 
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
                         robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
                         robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
                         robot.motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
+                        telemetry.addData("armStepIncr", armStepIncr);
                         telemetry.addData("Arm Pos", robot.Arm.getCurrentPosition());
                         telemetry.update();
                     }
@@ -334,8 +376,9 @@ public class MecanumLiftMK2 extends LinearOpMode
                 }
                 robot.armEXT.setPower(0);
 
-                tiltManuel = PIVOT_TRAVEL;
+                /*tiltManuel = PIVOT_TRAVEL;
                 robot.collectionPivot.setPosition(tiltManuel);
+                */
             }
             else if(!gamepad2.dpad_left)
             {
