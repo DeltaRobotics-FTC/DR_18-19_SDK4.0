@@ -41,10 +41,10 @@ public class MecanumLiftMK2 extends LinearOpMode
 
     final int ARM_EXT_SCORE = -6500;
     final double PIVOT_SCORE = 0.325;
-    final double PIVOT_COLLECT = 0.174;
-    final int ARM_COLLECT = 1627;
-    final int ARM_SCORE = -7015;
-    final int ARM_TRAVEL = -1757;
+    final double PIVOT_COLLECT = 0.148;
+    final int ARM_COLLECT = 756;
+    final int ARM_SCORE = -4928;
+    final int ARM_TRAVEL = -900;
     final double PIVOT_TRAVEL = 0.29;
 
     final double PIVOT_MIN_POS = 0.65;
@@ -247,9 +247,43 @@ public class MecanumLiftMK2 extends LinearOpMode
                 else if(robot.Arm.getCurrentPosition() >= ARM_SCORE && !gamepad1.dpad_up)
                 {// arm too low, move up
 
+                    //setup variables
+                    armEncDelta = ARM_SCORE - robot.Arm.getCurrentPosition();
+                    armStepIncr = armEncDelta / PIVOT_STEPS;
+                    pivotDelta = PIVOT_SCORE - tiltManuel;
+                    pivotStepIncr = pivotDelta / PIVOT_STEPS;
+                    armStepTarget = robot.Arm.getCurrentPosition() + armStepIncr;
+
+                    telemetry.addData("BeforeMove","");
+                    telemetry.addData("armStepTarget", armStepTarget);
+                    telemetry.addData("armEncDelta", armEncDelta);
+                    telemetry.addData("armStepIncr", armStepIncr);
+                    telemetry.addData("pivotDelta", pivotDelta);
+                    telemetry.addData("pivotStepTarget", pivotStepIncr);
+                    telemetry.update();
+
                     robot.Arm.setPower(-1.0);
                     while(robot.Arm.getCurrentPosition() >= ARM_SCORE && !gamepad1.dpad_up)
                     {
+
+                        if(armEncDelta > 0) //checks direction of movement
+                        {
+                            if(robot.Arm.getCurrentPosition() >= armStepTarget)
+                            {
+                                armStepTarget += armStepIncr;
+                                tiltManuel += pivotStepIncr;
+                                robot.collectionPivot.setPosition(tiltManuel);
+                            }
+                        }
+                        else
+                        {
+                            if(robot.Arm.getCurrentPosition() <= armStepTarget)
+                            {
+                                armStepTarget += armStepIncr;
+                                tiltManuel += pivotStepIncr;
+                                robot.collectionPivot.setPosition(tiltManuel);
+                            }
+                        }
 
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
                         robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
@@ -281,10 +315,11 @@ public class MecanumLiftMK2 extends LinearOpMode
                 else if(robot.Arm.getCurrentPosition() >= ARM_TRAVEL && !gamepad1.dpad_up)
                 {// arm too low, move up
 
-                    armEncDelta = ARM_SCORE - robot.Arm.getCurrentPosition();
+                    //setup variables
+                    armEncDelta = ARM_TRAVEL - robot.Arm.getCurrentPosition();
                     armStepIncr = armEncDelta / PIVOT_STEPS;
-                    armStepTarget = robot.Arm.getCurrentPosition() + armStepTarget;
-                    pivotDelta = PIVOT_SCORE - tiltManuel;
+                    armStepTarget = robot.Arm.getCurrentPosition() + armStepIncr;
+                    pivotDelta = PIVOT_TRAVEL - tiltManuel;
                     pivotStepIncr = pivotDelta / PIVOT_STEPS;
 
                     telemetry.addData("BeforeMove","");
@@ -294,18 +329,17 @@ public class MecanumLiftMK2 extends LinearOpMode
                     telemetry.addData("pivotDelta", pivotDelta);
                     telemetry.addData("pivotStepTarget", pivotStepIncr);
                     telemetry.update();
-                    sleep(3500);
 
                     robot.Arm.setPower(-1.0);
                     while(robot.Arm.getCurrentPosition() >= ARM_TRAVEL && !gamepad1.dpad_up)
                     {
-                        if(armEncDelta > 0)
+                        if(armEncDelta > 0) //checks direction of movement
                         {
                             if(robot.Arm.getCurrentPosition() >= armStepTarget)
                             {
                                armStepTarget += armStepIncr;
                                tiltManuel += pivotStepIncr;
-                                robot.collectionGate.setPosition(tiltManuel);
+                                robot.collectionPivot.setPosition(tiltManuel);
                             }
                         }
                         else
@@ -314,7 +348,7 @@ public class MecanumLiftMK2 extends LinearOpMode
                             {
                                 armStepTarget += armStepIncr;
                                 tiltManuel += pivotStepIncr;
-                                robot.collectionGate.setPosition(tiltManuel);
+                                robot.collectionPivot.setPosition(tiltManuel);
                             }
                         }
 
@@ -329,9 +363,40 @@ public class MecanumLiftMK2 extends LinearOpMode
                 }
                 else if(robot.Arm.getCurrentPosition() <= ARM_TRAVEL && !gamepad1.dpad_up)
                 {// arm too high, move down
+                    armEncDelta = ARM_TRAVEL - robot.Arm.getCurrentPosition();
+                    armStepIncr = armEncDelta / PIVOT_STEPS;
+                    armStepTarget = robot.Arm.getCurrentPosition() + armStepIncr;
+                    pivotDelta = PIVOT_TRAVEL - tiltManuel;
+                    pivotStepIncr = pivotDelta / PIVOT_STEPS;
+
+                    telemetry.addData("BeforeMove","");
+                    telemetry.addData("armStepTarget", armStepTarget);
+                    telemetry.addData("armEncDelta", armEncDelta);
+                    telemetry.addData("armStepIncr", armStepIncr);
+                    telemetry.addData("pivotDelta", pivotDelta);
+                    telemetry.addData("pivotStepTarget", pivotStepIncr);
+                    telemetry.update();
                     robot.Arm.setPower(1.0);
                     while(robot.Arm.getCurrentPosition() <= ARM_TRAVEL && !gamepad1.dpad_up)
                     {
+                        if(armEncDelta > 0) //checks direction of movement
+                        {
+                            if(robot.Arm.getCurrentPosition() >= armStepTarget)
+                            {
+                                armStepTarget += armStepIncr;
+                                tiltManuel += pivotStepIncr;
+                                robot.collectionPivot.setPosition(tiltManuel);
+                            }
+                        }
+                        else
+                        {
+                            if(robot.Arm.getCurrentPosition() <= armStepTarget)
+                            {
+                                armStepTarget += armStepIncr;
+                                tiltManuel += pivotStepIncr;
+                                robot.collectionPivot.setPosition(tiltManuel);
+                            }
+                        }
 
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
                         robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
@@ -389,8 +454,8 @@ public class MecanumLiftMK2 extends LinearOpMode
             if(gamepad2.dpad_down && !dPadDownState)
             {
                 dPadDownState = true;
-                tiltManuel = PIVOT_COLLECT;
-                robot.collectionPivot.setPosition(tiltManuel);
+                //tiltManuel = PIVOT_COLLECT;
+                robot.collectionGate.setPosition(0.4);
 
                 //Arm Extension
                 if(robot.armEXT.getCurrentPosition() >= ARM_EXT_SCORE - 100 && robot.armEXT.getCurrentPosition() <= ARM_EXT_SCORE + 100 && !gamepad1.dpad_up)
@@ -426,11 +491,11 @@ public class MecanumLiftMK2 extends LinearOpMode
                 robot.armEXT.setPower(0);
 
                 //Arm
-                if(robot.Arm.getCurrentPosition() >= ARM_COLLECT - 100 && robot.Arm.getCurrentPosition() <= ARM_COLLECT + 100 && !gamepad1.dpad_up)
+                if(robot.Arm.getCurrentPosition() >= ARM_COLLECT - 100)
                 {
                     // in range, no action
                 }
-                else if(robot.Arm.getCurrentPosition() >= ARM_COLLECT && !gamepad1.dpad_up)
+                /*else if(robot.Arm.getCurrentPosition() >= ARM_COLLECT && !gamepad1.dpad_up)
                 {// arm too low, move up
                     robot.Arm.setPower(-1.0);
                     while(robot.Arm.getCurrentPosition() >= ARM_COLLECT && !gamepad1.dpad_up)
@@ -443,11 +508,45 @@ public class MecanumLiftMK2 extends LinearOpMode
                         telemetry.update();
                     }
                 }
+                */
                 else if(robot.Arm.getCurrentPosition() <= ARM_COLLECT && !gamepad1.dpad_up)
                 {// arm too high, move down
+
+                    armEncDelta = ARM_COLLECT - robot.Arm.getCurrentPosition();
+                    armStepIncr = armEncDelta / PIVOT_STEPS;
+                    armStepTarget = robot.Arm.getCurrentPosition() + armStepIncr;
+                    pivotDelta = PIVOT_COLLECT - tiltManuel;
+                    pivotStepIncr = pivotDelta / PIVOT_STEPS;
+
+                    telemetry.addData("BeforeMove","");
+                    telemetry.addData("armStepTarget", armStepTarget);
+                    telemetry.addData("armEncDelta", armEncDelta);
+                    telemetry.addData("armStepIncr", armStepIncr);
+                    telemetry.addData("pivotDelta", pivotDelta);
+                    telemetry.addData("pivotStepTarget", pivotStepIncr);
+                    telemetry.update();
                     robot.Arm.setPower(1.0);
                     while(robot.Arm.getCurrentPosition() <= ARM_COLLECT && !gamepad1.dpad_up)
                     {
+                        if(armEncDelta > 0) //checks direction of movement
+                        {
+                            if(robot.Arm.getCurrentPosition() >= armStepTarget)
+                            {
+                                armStepTarget += armStepIncr;
+                                tiltManuel += pivotStepIncr;
+                                robot.collectionPivot.setPosition(tiltManuel);
+                            }
+                        }
+                        else
+                        {
+                            if(robot.Arm.getCurrentPosition() <= armStepTarget)
+                            {
+                                armStepTarget += armStepIncr;
+                                tiltManuel += pivotStepIncr;
+                                robot.collectionPivot.setPosition(tiltManuel);
+                            }
+                        }
+
                         robot.motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
                         robot.motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
                         robot.motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);

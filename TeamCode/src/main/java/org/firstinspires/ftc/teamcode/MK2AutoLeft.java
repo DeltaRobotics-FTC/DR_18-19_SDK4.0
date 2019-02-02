@@ -21,9 +21,9 @@ import for_camera_opmodes.LinearOpModeCamera;
  */
 
 
-@Autonomous(name="MK2AutoUnhook",group = "")
+@Autonomous(name="MK2AutoLeft",group = "")
 //@Disabled
-public class MK2AutoUnhook extends LinearOpModeCamera
+public class MK2AutoLeft extends LinearOpModeCamera
 {
     BNO055IMU imu;
     Orientation angles;
@@ -59,7 +59,7 @@ public class MK2AutoUnhook extends LinearOpModeCamera
         waitForStart();
 
          robot.motorLift.setPower(1.0);
-            while (robot.motorLift.getCurrentPosition() < 10000) { //Was previously 11117
+            while (robot.motorLift.getCurrentPosition() < 10500) { //Was previously 11117
                 telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                 telemetry.update();
             }
