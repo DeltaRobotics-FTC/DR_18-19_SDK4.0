@@ -220,17 +220,6 @@ public class LinearOpModeCamera extends LinearOpMode
         SimpleDateFormat s = new SimpleDateFormat("ddhhmmss");
         String format = s.format(new Date());
         String fname = format +".jpg";
-        File dummy = new File(myDir, "dummy");
-        if (dummy.exists()) dummy.delete();
-        try {
-            out = new FileOutputStream(dummy);
-            out.write(0);
-            out.close();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
         File file = new File (myDir, fname);
         if (file.exists ()) file.delete ();
         try {
@@ -242,7 +231,6 @@ public class LinearOpModeCamera extends LinearOpMode
         } catch (Exception e) {
             e.printStackTrace();
         }
-        dummy.delete();
     }
 
     public void SaveRGB (Bitmap colorBitmap)

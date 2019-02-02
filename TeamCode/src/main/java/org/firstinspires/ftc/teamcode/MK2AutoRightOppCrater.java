@@ -426,9 +426,9 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
         sleep(stepSleep);
         drive.encoderDrive(100, driveStyle.FORWARD, 0.6, motors);
         sleep(stepSleep);
-        drive.OrientationDrive(-110, 0.5, motors, imu);
+        drive.OrientationDrive(-120, 0.5, motors, imu);
         sleep(stepSleep);
-        if(mineralPositions == MineralPositions.RIGHT)
+        if(mineralPositions == MineralPositions.LEFT)
         {
             drive.timeDrive(200, 0.8, driveStyle.STRAFE_RIGHT, motors);
         }
