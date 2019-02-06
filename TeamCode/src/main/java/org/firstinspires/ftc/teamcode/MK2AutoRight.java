@@ -293,7 +293,6 @@ public class MK2AutoRight extends LinearOpModeCamera {
                 } else {
                     telemetry.addData("Image Not Ready", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
                     telemetry.update();
-                    sleep(3000);
                 }
 
                 stopCamera();
