@@ -169,6 +169,7 @@ public class LinearOpModeCamera extends LinearOpMode
                 camera.release();
             }
             camera = null;
+            imageReady = false;
         }
     }
 

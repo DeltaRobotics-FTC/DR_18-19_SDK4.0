@@ -193,6 +193,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
         sleep(stepSleep);
 
+        //FIRST PICTURE SECOND POSITION
         //turns the robot so it can take a picture of the right mineral
         if(mineralPositions != MineralPositions.CENTER)
         {
@@ -202,6 +203,12 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
                 startCamera();
                 setCameraDownsampling(1);
+                int counter = 0;
+                while(!imageReady() && counter < 6) {
+                    telemetry.addData("Image Not Ready", counter++);
+                    telemetry.update();
+                    sleep(500);
+                }
                 if(imageReady()) {
                     int redValueLeft = -76800;
                     int blueValueLeft = -76800;
@@ -209,7 +216,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
                     Bitmap rgbImage;
                     //The last value must correspond to the downsampling value from above
-                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                   // rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
                     rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
@@ -240,14 +247,59 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
                     SaveImage(rgbImage);
 
+                    //Analyzing Jewel Color
+                    for (int x = xMin; x < xMax; x++) {
+                        for (int y = yMin; y < yMax; y++) {
+                            int pixel = rgbImage.getPixel(x, y);
+                            redValueLeft += red(pixel);
+                            blueValueLeft += blue(pixel);
+                            greenValueLeft += green(pixel);
+                        }
+                    }
+                    redValueLeft = normalizePixels(redValueLeft);
+                    blueValueLeft = normalizePixels(blueValueLeft);
+                    greenValueLeft = normalizePixels(greenValueLeft);
+                        /*telemetry.addData("redValueLeft", redValueLeft);
+                        telemetry.addData("blueValueLeft", blueValueLeft);
+                        telemetry.addData("greenValueLeft", greenValueLeft);
+                        telemetry.addData("Width", rgbImage.getWidth());
+                        telemetry.addData("Height", rgbImage.getHeight());
+                        telemetry.update();*/
 
 
+                    mineralColorInt = highestColor(redValueLeft, blueValueLeft, greenValueLeft);
+
+                    telemetry.addData("Mineral", mineralColorInt);
+                    if (Math.abs((redValueLeft - blueValueLeft)) <= 5) {
+                        telemetry.addData("Mineral Color", "1 : Silver");
+                        telemetry.addData("Red", redValueLeft);
+                        telemetry.addData("Blue", blueValueLeft);
+                        telemetry.addData("Green", greenValueLeft);
+                        telemetry.addData("Red Blue Difference", Math.abs((redValueLeft - blueValueLeft)));
+                        mineralPositions = MineralPositions.RIGHT;
+                        telemetry.addData("Mineral Position", mineralPositions);
+                    } else
+                    {
+                        telemetry.addData("Mineral Color", "Gold");
+                        telemetry.addData("Red", redValueLeft);
+                        telemetry.addData("Blue", blueValueLeft);
+                        telemetry.addData("Green", greenValueLeft);
+                        mineralPositions = MineralPositions.LEFT;
+                        telemetry.addData("Mineral Position", mineralPositions);
+                    }
+                    telemetry.update();
+                    sleep(stepSleep);
+
+                } else {
+                    telemetry.addData("Image Not Ready", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+                    telemetry.update();
+                    sleep(3000);
                 }
 
                 stopCamera();
             }
 
-            if(isCameraAvailable()) {
+           /* if(isCameraAvailable()) {
 
                 startCamera();
                 setCameraDownsampling(1);
@@ -358,7 +410,9 @@ public class MK2AutoRight extends LinearOpModeCamera {
                         telemetry.addData("greenValueLeft", greenValueLeft);
                         telemetry.addData("Width", rgbImage.getWidth());
                         telemetry.addData("Height", rgbImage.getHeight());
-                        telemetry.update();*/
+                        telemetry.update();
+
+
 
 
                     mineralColorInt = highestColor(redValueLeft, blueValueLeft, greenValueLeft);
@@ -387,7 +441,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
                 }
 
                 stopCamera();
-            }
+            }  */
         }
 
 

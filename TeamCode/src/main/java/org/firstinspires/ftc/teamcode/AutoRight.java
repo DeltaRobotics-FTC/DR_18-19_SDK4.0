@@ -216,7 +216,7 @@ public class AutoRight extends LinearOpModeCamera {
 
                     Bitmap rgbImage;
                     //The last value must correspond to the downsampling value from above
-                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                   //rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
                     rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
@@ -303,7 +303,7 @@ public class AutoRight extends LinearOpModeCamera {
 
                     Bitmap rgbImage;
                     //The last value must correspond to the downsampling value from above
-                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                    //rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
                     rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
