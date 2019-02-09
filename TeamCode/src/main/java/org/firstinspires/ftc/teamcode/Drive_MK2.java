@@ -136,7 +136,7 @@ public class Drive_MK2 extends LinearOpMode
 
             case STRAFE_RIGHT:
             {
-                double encoderReadingLB = motors[1].getCurrentPosition();
+                double encoderReadingLB = motors[2].getCurrentPosition();
                 double target = (encoderReadingLB + encoderDelta);
                 strafeRight(motorPower, motors);
 

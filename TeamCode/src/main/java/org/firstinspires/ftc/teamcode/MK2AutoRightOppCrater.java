@@ -85,8 +85,7 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
         motors[3] = robot.motorLF;
 
 
-
-        if(isCameraAvailable()) {
+        if (isCameraAvailable()) {
 
             setCameraDownsampling(1);
 
@@ -166,8 +165,7 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
                     telemetry.addData("Blue", blueValueLeft);
                     telemetry.addData("Green", greenValueLeft);
                     telemetry.addData("Red Blue Difference", Math.abs((redValueLeft - blueValueLeft)));
-                } else
-                {
+                } else {
                     telemetry.addData("Mineral Color", "Gold");
                     telemetry.addData("Red", redValueLeft);
                     telemetry.addData("Blue", blueValueLeft);
@@ -185,130 +183,33 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
         telemetry.addData("Before Correction", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
         telemetry.update();
 
-
         //Makes the robot move away from the latch
-       drive.encoderDrive(90, driveStyle.BACKWARD,0.3, motors);
+        drive.encoderDrive(90, driveStyle.BACKWARD, 0.3, motors);
 
         sleep(stepSleep);
 
         //turns the robot so it can take a picture of the right mineral
-        if(mineralPositions != MineralPositions.CENTER)
-        {
+        if (mineralPositions != MineralPositions.CENTER) {
             sleep(stepSleep);
             //second picture
-            if(isCameraAvailable()) {
+            if (isCameraAvailable()) {
 
                 startCamera();
                 setCameraDownsampling(1);
-                if(imageReady()) {
-                    int redValueLeft = -76800;
-                    int blueValueLeft = -76800;
-                    int greenValueLeft = -76800;
-
-                    Bitmap rgbImage;
-                    //The last value must correspond to the downsampling value from above
-                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
-
-                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
-
-                    xMax = 300;
-                    xMin = 0;
-
-                    yMin = 925;
-                    yMax = 1175;
-
-                    for (int x = xMin; x <= xMax; x++) {
-                        for (int y = yMin; y <= yMax; y++) {
-                            if (x == xMax && y <= yMax) {
-                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                            }
-                            if (x <= xMax && y == yMin) {
-                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                            }
-                            if (x == xMin && y <= yMax) {
-                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                            }
-                            if (x <= xMax && y == yMax) {
-                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-
-                            }
-                        }
-                    }
-
-
-                    SaveImage(rgbImage);
-
-
-
+                int counter = 0;
+                while (!imageReady() && counter < 6) {
+                    telemetry.addData("Image Not Ready", counter++);
+                    telemetry.update();
+                    sleep(500);
                 }
-
-                stopCamera();
-            }
-
-            if(isCameraAvailable()) {
-
-                startCamera();
-                setCameraDownsampling(1);
-                if(imageReady()) {
+                if (imageReady()) {
                     int redValueLeft = -76800;
                     int blueValueLeft = -76800;
                     int greenValueLeft = -76800;
 
                     Bitmap rgbImage;
                     //The last value must correspond to the downsampling value from above
-                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
-
-                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
-
-                    xMax = 300;
-                    xMin = 0;
-
-                    yMin = 925;
-                    yMax = 1175;
-
-                    for (int x = xMin; x <= xMax; x++) {
-                        for (int y = yMin; y <= yMax; y++) {
-                            if (x == xMax && y <= yMax) {
-                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                            }
-                            if (x <= xMax && y == yMin) {
-                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                            }
-                            if (x == xMin && y <= yMax) {
-                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-                            }
-                            if (x <= xMax && y == yMax) {
-                                rgbImage.setPixel(x, y, Color.rgb(0, 255, 0));
-
-                            }
-                        }
-                    }
-
-
-                    SaveImage(rgbImage);
-
-
-
-                }
-
-                stopCamera();
-            }
-
-
-            sleep(stepSleep);
-            //third picture
-            if(isCameraAvailable()) {
-
-                startCamera();
-                setCameraDownsampling(1);
-                if(imageReady()) {
-                    int redValueLeft = -76800;
-                    int blueValueLeft = -76800;
-                    int greenValueLeft = -76800;
-
-                    Bitmap rgbImage;
-                    //The last value must correspond to the downsampling value from above
-                    rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
+                    // rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
                     rgbImage = convertYuvImageToRgb(yuvImage, width, height, 1);
 
@@ -370,8 +271,7 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
                         telemetry.addData("Red Blue Difference", Math.abs((redValueLeft - blueValueLeft)));
                         mineralPositions = MineralPositions.RIGHT;
                         telemetry.addData("Mineral Position", mineralPositions);
-                    } else
-                    {
+                    } else {
                         telemetry.addData("Mineral Color", "Gold");
                         telemetry.addData("Red", redValueLeft);
                         telemetry.addData("Blue", blueValueLeft);
@@ -382,53 +282,51 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
                     telemetry.update();
                     sleep(stepSleep);
 
+                } else {
+                    telemetry.addData("Image Not Ready", AngleUnit.DEGREES.fromUnit(angles.angleUnit, angles.firstAngle));
+                    telemetry.update();
                 }
 
                 stopCamera();
             }
         }
 
+            if (mineralPositions == MineralPositions.CENTER) {
+                drive.encoderDrive(100, driveStyle.STRAFE_LEFT, 0.8, motors);
+                sleep(stepSleep);
+                drive.encoderDrive(105, driveStyle.FORWARD, 0.3, motors);
+                sleep(stepSleep);
+                drive.OrientationDrive(-80, 0.5, motors, imu);
+                sleep(stepSleep);
+                drive.encoderDrive(725, driveStyle.BACKWARD, 0.6, motors);
+            }
 
+            if (mineralPositions == MineralPositions.LEFT) {
+                drive.encoderDrive(280, driveStyle.STRAFE_LEFT, 0.8, motors);
+                sleep(stepSleep);
+                drive.encoderDrive(150, driveStyle.BACKWARD, 0.6, motors);
+                sleep(stepSleep);
+                drive.OrientationDrive(-100, 0.5, motors, imu);
+                sleep(stepSleep);
+                drive.encoderDrive(700, driveStyle.BACKWARD, 0.6, motors);
+            }
 
+            if (mineralPositions == MineralPositions.RIGHT) {
+                drive.encoderDrive(280, driveStyle.STRAFE_LEFT, 0.8, motors);
+                sleep(stepSleep);
+                drive.encoderDrive(400, driveStyle.FORWARD, 0.6, motors);
+                sleep(stepSleep);
+                drive.OrientationDrive(-60, 0.5, motors, imu);
+                sleep(stepSleep);
+                drive.encoderDrive(700, driveStyle.BACKWARD, 0.6, motors);
+            }
 
-        if(mineralPositions == MineralPositions.CENTER) {
-            drive.encoderDrive(100, driveStyle.STRAFE_LEFT, 0.8, motors);
             sleep(stepSleep);
-            drive.encoderDrive(105, driveStyle.FORWARD, 0.3, motors);
+            drive.encoderDrive(100, driveStyle.FORWARD, 0.6, motors);
             sleep(stepSleep);
-            drive.OrientationDrive(-80, 0.5, motors, imu);
+            drive.OrientationDrive(-125, 0.5, motors, imu);
             sleep(stepSleep);
-            drive.encoderDrive(725, driveStyle.BACKWARD, 0.6, motors);
-        }
-
-        if(mineralPositions == MineralPositions.LEFT)
-        {
-            drive.encoderDrive(280, driveStyle.STRAFE_LEFT, 0.8, motors);
-            sleep(stepSleep);
-            drive.encoderDrive(150, driveStyle.BACKWARD, 0.6, motors);
-            sleep(stepSleep);
-            drive.OrientationDrive(-100, 0.5, motors, imu);
-            sleep(stepSleep);
-            drive.encoderDrive(700, driveStyle.BACKWARD, 0.6, motors);
-        }
-
-        if(mineralPositions == MineralPositions.RIGHT)
-        {
-            drive.encoderDrive(280, driveStyle.STRAFE_LEFT, 0.8, motors);
-            sleep(stepSleep);
-            drive.encoderDrive(400, driveStyle.FORWARD, 0.6, motors);
-            sleep(stepSleep);
-            drive.OrientationDrive(-60, 0.5, motors, imu);
-            sleep(stepSleep);
-            drive.encoderDrive(700, driveStyle.BACKWARD, 0.6, motors);
-        }
-
-        sleep(stepSleep);
-        drive.encoderDrive(100, driveStyle.FORWARD, 0.6, motors);
-        sleep(stepSleep);
-        drive.OrientationDrive(-120, 0.5, motors, imu);
-        sleep(stepSleep);
-        if(mineralPositions == MineralPositions.LEFT)
+        /*if(mineralPositions == MineralPositions.LEFT)
         {
             drive.timeDrive(200, 0.8, driveStyle.STRAFE_RIGHT, motors);
         }
@@ -436,13 +334,21 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
         {
             drive.timeDrive(750, 0.8, driveStyle.STRAFE_RIGHT, motors);
         }
-
-
-        //Drop marker
-        sleep(stepSleep);
-        robot.marker.setPosition(1.0);
-        sleep(1000);
-        robot.marker.setPosition(0.15);
+        */
+        if(mineralPositions == MineralPositions.LEFT)
+        {
+            drive.encoderDrive(50, driveStyle.STRAFE_RIGHT, 0.8, motors);
+        }
+        else
+        {
+            drive.encoderDrive(150, driveStyle.STRAFE_RIGHT, 0.8, motors);
+        }
+            sleep(stepSleep);
+            //Drop marker
+            sleep(stepSleep);
+            robot.marker.setPosition(1.0);
+            sleep(1000);
+            robot.marker.setPosition(0.15);
 
         if(mineralPositions == MineralPositions.CENTER)
         {
@@ -458,5 +364,6 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
         }
         sleep(stepSleep);
        drive.timeDrive(1000, 0.3, driveStyle.FORWARD, motors);
+
         }
     }
