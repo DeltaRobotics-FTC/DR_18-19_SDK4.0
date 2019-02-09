@@ -140,7 +140,7 @@ public class Drive_MK2 extends LinearOpMode
                 double target = (encoderReadingLB + encoderDelta);
                 strafeRight(motorPower, motors);
 
-                while (motors[1].getCurrentPosition() <= target)
+                while (motors[2].getCurrentPosition() <= target)
                 {
 
                 }
