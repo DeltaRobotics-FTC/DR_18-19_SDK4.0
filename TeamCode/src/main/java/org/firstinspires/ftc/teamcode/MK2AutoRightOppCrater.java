@@ -298,7 +298,7 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
                 sleep(stepSleep);
                 drive.OrientationDrive(-80, 0.5, motors, imu);
                 sleep(stepSleep);
-                drive.encoderDrive(775, driveStyle.BACKWARD, 0.6, motors);
+                drive.encoderDrive(850, driveStyle.BACKWARD, 0.6, motors);
             }
 
             if (mineralPositions == MineralPositions.LEFT) {
@@ -318,11 +318,18 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
                 sleep(stepSleep);
                 drive.OrientationDrive(-60, 0.5, motors, imu);
                 sleep(stepSleep);
-                drive.encoderDrive(750, driveStyle.BACKWARD, 0.6, motors);
+                drive.encoderDrive(825, driveStyle.BACKWARD, 0.6, motors);
             }
 
             sleep(stepSleep);
-            drive.encoderDrive(20, driveStyle.FORWARD, 0.6, motors);
+            if(mineralPositions == MineralPositions.RIGHT)
+            {
+                drive.encoderDrive(50, driveStyle.FORWARD, 0.6, motors);
+            }
+            else
+            {
+                drive.encoderDrive(20, driveStyle.FORWARD, 0.6, motors);
+            }
             sleep(stepSleep);
             drive.OrientationDrive(-135, 0.5, motors, imu);
             sleep(stepSleep);
@@ -353,7 +360,7 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
 
         if(mineralPositions == MineralPositions.CENTER)
         {
-            drive.encoderDrive(850, driveStyle.FORWARD, 0.8, motors);
+            drive.encoderDrive(900, driveStyle.FORWARD, 0.8, motors);
         }
         if(mineralPositions == MineralPositions.LEFT)
         {
