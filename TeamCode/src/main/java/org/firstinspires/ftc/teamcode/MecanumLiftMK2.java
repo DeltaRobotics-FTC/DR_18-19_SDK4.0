@@ -136,13 +136,13 @@ public class MecanumLiftMK2 extends LinearOpMode
 
             if(gamepad2.left_trigger > 0.5)
             {
-                robot.collectionSweeper.setPosition(0);
+                robot.collectionSweeper.setPosition(0.9);
                 robot.collectionGate.setPosition(0.4);
             }
 
             if(gamepad2.dpad_right)
             {
-                robot.collectionSweeper.setPosition(1.0);
+                robot.collectionSweeper.setPosition(0.04);
             }
 
             //moves the gate with the right bumper and trigger
