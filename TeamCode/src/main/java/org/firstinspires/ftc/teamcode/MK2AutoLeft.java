@@ -75,20 +75,21 @@ public class MK2AutoLeft extends LinearOpModeCamera {
 
             waitForStart();
 
-            robot.motorLift.setPower(1.0);
+           /* robot.motorLift.setPower(1.0);
             while (robot.motorLift.getCurrentPosition() < 10500) { //Was previously 11117
                 telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                 telemetry.update();
             }
 
             robot.motorLift.setPower(0);
+            */
 
             sleep(SLEEP_TIME);
 
             //drive.timeDrive(500,0.3, driveStyle.BACKWARD, motors); //Robot orientation is forward
 
                 //Lower robot to ground
-                robot.motorLift.setPower(1.0);
+                /*robot.motorLift.setPower(1.0);
                 while (robot.motorLift.getCurrentPosition() <= 10500) {
                     telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                     telemetry.update();
@@ -96,6 +97,7 @@ public class MK2AutoLeft extends LinearOpModeCamera {
                 robot.motorLift.setPower(0);
 
                 sleep(SLEEP_TIME);
+                */
 
                 if (imageReady()) {
                     int redValueLeft = -76800;
@@ -294,7 +296,7 @@ public class MK2AutoLeft extends LinearOpModeCamera {
 
             switch (mineralPositions) {
                 case RIGHT: {
-                    drive.encoderDrive(210, driveStyle.FORWARD, 0.6, motors);
+                    drive.encoderDrive(185, driveStyle.FORWARD, 0.6, motors);
                     drive.OrientationDrive(70, 0.5, motors, imu);
                     break;
                 }
@@ -305,8 +307,8 @@ public class MK2AutoLeft extends LinearOpModeCamera {
                 }
 
                 case CENTER: {
-                    drive.encoderDrive(90, driveStyle.FORWARD, 0.6, motors);
-                    drive.OrientationDrive(75, 0.5, motors, imu);
+                    //drive.encoderDrive(60, driveStyle.FORWARD, 0.6, motors);
+                    drive.OrientationDrive(70, 0.5, motors, imu);
                     break;
                 }
             }
