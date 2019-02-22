@@ -75,14 +75,14 @@ public class MK2AutoLeft extends LinearOpModeCamera {
 
             waitForStart();
 
-           /* robot.motorLift.setPower(1.0);
+            robot.motorLift.setPower(1.0);
             while (robot.motorLift.getCurrentPosition() < 10500) { //Was previously 11117
                 telemetry.addData("motor lift pos", robot.motorLift.getCurrentPosition());
                 telemetry.update();
             }
 
             robot.motorLift.setPower(0);
-            */
+
 
             sleep(SLEEP_TIME);
 
