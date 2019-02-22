@@ -43,7 +43,7 @@ public class MecanumLiftMK2 extends LinearOpMode
     final double PIVOT_SCORE = 0.325;
     final double PIVOT_COLLECT = 0.148;
     final int ARM_COLLECT = 756;
-    final int ARM_SCORE = -4928;
+    final int ARM_SCORE = -4750;
     final int ARM_TRAVEL = -900;
     final double PIVOT_TRAVEL = 0.29;
 
