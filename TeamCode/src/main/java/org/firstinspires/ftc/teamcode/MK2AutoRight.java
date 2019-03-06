@@ -94,7 +94,11 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
             startCamera();
 
-            waitForStart();
+            while(!opModeIsActive() && !isStopRequested())
+            {
+                telemetry.addData("status", "wating for start command...");
+                telemetry.update();
+            }
 
             //Lower robot to ground
             robot.motorLift.setPower(1.0);
@@ -458,7 +462,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
         if(mineralPositions == MineralPositions.LEFT)
         {
-            drive.encoderDrive(280, driveStyle.STRAFE_LEFT, 0.8, motors);
+            drive.encoderDrive(250, driveStyle.STRAFE_LEFT, 0.8, motors);
             sleep(stepSleep);
             drive.encoderDrive(150, driveStyle.BACKWARD, 0.6, motors);
             sleep(stepSleep);
@@ -469,7 +473,7 @@ public class MK2AutoRight extends LinearOpModeCamera {
 
         if(mineralPositions == MineralPositions.RIGHT)
         {
-            drive.encoderDrive(280, driveStyle.STRAFE_LEFT, 0.8, motors);
+            drive.encoderDrive(250, driveStyle.STRAFE_LEFT, 0.8, motors);
             sleep(stepSleep);
             drive.encoderDrive(400, driveStyle.FORWARD, 0.6, motors);
             sleep(stepSleep);
@@ -512,6 +516,14 @@ public class MK2AutoRight extends LinearOpModeCamera {
             drive.encoderDrive(850, driveStyle.FORWARD, 0.8, motors);
         }
         sleep(stepSleep);
-       drive.timeDrive(1000, 0.3, driveStyle.FORWARD, motors);
+        if(mineralPositions == MineralPositions.RIGHT)
+        {
+            drive.timeDrive(1500, 0.3, driveStyle.FORWARD, motors);
+        }
+        else
+        {
+            drive.timeDrive(1000, 0.3, driveStyle.FORWARD, motors);
+        }
+
         }
     }

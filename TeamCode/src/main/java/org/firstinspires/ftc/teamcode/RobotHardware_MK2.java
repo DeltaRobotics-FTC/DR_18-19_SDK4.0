@@ -96,7 +96,7 @@ public class RobotHardware_MK2
         marker.setPosition(0.15);
         collectionSweeper.setPosition(0.5);
         collectionGate.setPosition(0.4);
-        collectionPivot.setPosition(0.241);
+        collectionPivot.setPosition(0.241); //was 0.241
 
         motorRF.setPower(0);//]
         motorLF.setPower(0);//] Stops the drive motors

@@ -91,7 +91,11 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
 
             startCamera();
 
-            waitForStart();
+            while(!opModeIsActive() && !isStopRequested())
+            {
+                telemetry.addData("status", "wating for start command...");
+                telemetry.update();
+            }
 
             //Lower robot to ground
             robot.motorLift.setPower(1.0);
@@ -353,22 +357,24 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
             sleep(stepSleep);
             */
             //Drop marker
+            drive.encoderDrive(100, driveStyle.FORWARD, 0.8, motors);
             sleep(stepSleep);
             robot.marker.setPosition(1.0);
             sleep(1000);
             robot.marker.setPosition(0.15);
+            //robot.marker.setPosition(0.15);
 
         if(mineralPositions == MineralPositions.CENTER)
         {
-            drive.encoderDrive(900, driveStyle.FORWARD, 0.8, motors);
+            drive.encoderDrive(800, driveStyle.FORWARD, 0.8, motors);
         }
         if(mineralPositions == MineralPositions.LEFT)
         {
-            drive.encoderDrive(950, driveStyle.FORWARD, 0.8, motors);
+            drive.encoderDrive(850, driveStyle.FORWARD, 0.8, motors);
         }
         if(mineralPositions == MineralPositions.RIGHT)
         {
-            drive.encoderDrive(900, driveStyle.FORWARD, 0.8, motors);
+            drive.encoderDrive(800, driveStyle.FORWARD, 0.8, motors);
         }
         sleep(stepSleep);
         if(mineralPositions == MineralPositions.RIGHT)
