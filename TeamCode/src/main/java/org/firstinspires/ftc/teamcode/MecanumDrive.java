@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Created by User on 4/19/2018.
  */
 @TeleOp(name="MecanumDrive",group = "")
-@Disabled
 public class MecanumDrive extends LinearOpMode
 {
     double zScale = 1.0;
@@ -20,6 +19,9 @@ public class MecanumDrive extends LinearOpMode
     DcMotor motorLF = null;
     DcMotor motorRB = null;
     DcMotor motorLB = null;
+
+    Drive_MK2 drive = new Drive_MK2();
+
     public void runOpMode()
     {
         //Maps motor objects to name in robot configuration
@@ -45,10 +47,10 @@ public class MecanumDrive extends LinearOpMode
             */
 
             //sets motor power according to joystick input
-            motorRF.setPower(speed*((-gamepad1.left_stick_y - gamepad1.left_stick_x) - (zScale * gamepad1.right_stick_x)));
-            motorLB.setPower(speed*((gamepad1.left_stick_y + gamepad1.left_stick_x) + (zScale * gamepad1.right_stick_x)));
-            motorRB.setPower(speed*(-(-gamepad1.left_stick_x + gamepad1.left_stick_y) - (zScale * gamepad1.right_stick_x)));
-            motorLF.setPower(speed*((-gamepad1.left_stick_x + gamepad1.left_stick_y)) + (zScale * gamepad1.right_stick_x));
+            motorRF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[0]);
+            motorRB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[1]);
+            motorLB.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[2]);
+            motorLF.setPower(speed * drive.setPower(gamepad1.right_stick_x, gamepad1.right_stick_y, gamepad1.left_stick_x)[3]);
 
             //Sends data back to driver station
             telemetry.addData("Motor RF Power", motorRF.getPower());
@@ -56,7 +58,6 @@ public class MecanumDrive extends LinearOpMode
             telemetry.addData("Motor RB power", motorRB.getPower());
             telemetry.addData("Motor LB power", motorLB.getPower());
 
-            telemetry.addData("PC","4");
 
             telemetry.update();
         }
