@@ -91,7 +91,11 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
 
             startCamera();
 
-            waitForStart();
+            while(!opModeIsActive() && !isStopRequested())
+            {
+                telemetry.addData("status", "wating for start command...");
+                telemetry.update();
+            }
 
             //Lower robot to ground
             robot.motorLift.setPower(1.0);
@@ -298,7 +302,7 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
                 sleep(stepSleep);
                 drive.OrientationDrive(-80, 0.5, motors, imu);
                 sleep(stepSleep);
-                drive.encoderDrive(725, driveStyle.BACKWARD, 0.6, motors);
+                drive.encoderDrive(850, driveStyle.BACKWARD, 0.6, motors);
             }
 
             if (mineralPositions == MineralPositions.LEFT) {
@@ -314,17 +318,24 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
             if (mineralPositions == MineralPositions.RIGHT) {
                 drive.encoderDrive(280, driveStyle.STRAFE_LEFT, 0.8, motors);
                 sleep(stepSleep);
-                drive.encoderDrive(400, driveStyle.FORWARD, 0.6, motors);
+                drive.encoderDrive(430, driveStyle.FORWARD, 0.6, motors);
                 sleep(stepSleep);
                 drive.OrientationDrive(-60, 0.5, motors, imu);
                 sleep(stepSleep);
-                drive.encoderDrive(700, driveStyle.BACKWARD, 0.6, motors);
+                drive.encoderDrive(825, driveStyle.BACKWARD, 0.6, motors);
             }
 
             sleep(stepSleep);
-            drive.encoderDrive(100, driveStyle.FORWARD, 0.6, motors);
+            if(mineralPositions == MineralPositions.RIGHT)
+            {
+                drive.encoderDrive(50, driveStyle.FORWARD, 0.6, motors);
+            }
+            else
+            {
+                drive.encoderDrive(20, driveStyle.FORWARD, 0.6, motors);
+            }
             sleep(stepSleep);
-            drive.OrientationDrive(-125, 0.5, motors, imu);
+            drive.OrientationDrive(-135, 0.5, motors, imu);
             sleep(stepSleep);
         /*if(mineralPositions == MineralPositions.LEFT)
         {
@@ -335,7 +346,7 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
             drive.timeDrive(750, 0.8, driveStyle.STRAFE_RIGHT, motors);
         }
         */
-        if(mineralPositions == MineralPositions.LEFT)
+        /*if(mineralPositions == MineralPositions.LEFT)
         {
             drive.encoderDrive(50, driveStyle.STRAFE_RIGHT, 0.8, motors);
         }
@@ -344,26 +355,37 @@ public class MK2AutoRightOppCrater extends LinearOpModeCamera {
             drive.encoderDrive(150, driveStyle.STRAFE_RIGHT, 0.8, motors);
         }
             sleep(stepSleep);
+            */
             //Drop marker
+            drive.encoderDrive(100, driveStyle.FORWARD, 0.8, motors);
             sleep(stepSleep);
             robot.marker.setPosition(1.0);
             sleep(1000);
             robot.marker.setPosition(0.15);
+            //robot.marker.setPosition(0.15);
 
         if(mineralPositions == MineralPositions.CENTER)
         {
-            drive.encoderDrive(850, driveStyle.FORWARD, 0.8, motors);
+            drive.encoderDrive(800, driveStyle.FORWARD, 0.8, motors);
         }
         if(mineralPositions == MineralPositions.LEFT)
         {
-            drive.encoderDrive(950, driveStyle.FORWARD, 0.8, motors);
+            drive.encoderDrive(850, driveStyle.FORWARD, 0.8, motors);
         }
         if(mineralPositions == MineralPositions.RIGHT)
         {
-            drive.encoderDrive(850, driveStyle.FORWARD, 0.8, motors);
+            drive.encoderDrive(800, driveStyle.FORWARD, 0.8, motors);
         }
         sleep(stepSleep);
-       drive.timeDrive(1000, 0.3, driveStyle.FORWARD, motors);
+        if(mineralPositions == MineralPositions.RIGHT)
+        {
+            drive.timeDrive(2000, 0.3, driveStyle.FORWARD, motors);
+        }
+        else
+        {
+            drive.timeDrive(1000, 0.3, driveStyle.FORWARD, motors);
+        }
+
 
         }
     }

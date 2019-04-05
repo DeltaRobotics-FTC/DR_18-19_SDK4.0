@@ -18,6 +18,8 @@ public class ServoTest extends LinearOpMode
     boolean leftDPadState = false;
     boolean rightDPadState = false;
 
+    boolean fastIncrement = true;
+
     double servoPosition = 0.5;
 
     @Override
@@ -32,10 +34,27 @@ public class ServoTest extends LinearOpMode
 
         while(opModeIsActive())
         {
+            if(gamepad1.a)
+            {
+                fastIncrement = true;
+            }
+
+            if(gamepad1.b)
+            {
+                fastIncrement = false;
+            }
+
             if(gamepad1.dpad_left && !leftDPadState)
             {
                 leftDPadState = true;
-                servoPosition -= 0.05;
+                if(fastIncrement)
+                {
+                    servoPosition -= 0.05;
+                }
+                else
+                {
+                    servoPosition -= 0.01;
+                }
             }
 
             else if(!gamepad1.dpad_left)
@@ -46,8 +65,17 @@ public class ServoTest extends LinearOpMode
             if(gamepad1.dpad_right && !rightDPadState)
             {
                 rightDPadState = true;
-                servoPosition += 0.05;
+
+                if(fastIncrement)
+                {
+                    servoPosition += 0.05;
+                }
+                else
+                {
+                    servoPosition += 0.01;
+                }
             }
+
 
             else if(!gamepad1.dpad_right)
             {
@@ -68,6 +96,7 @@ public class ServoTest extends LinearOpMode
 
             telemetry.addData("servo Pos", servo.getPosition());
             telemetry.addData("servoPosition Var", servoPosition);
+            telemetry.addData("Fast Increment", fastIncrement);
             telemetry.update();
 
         }
