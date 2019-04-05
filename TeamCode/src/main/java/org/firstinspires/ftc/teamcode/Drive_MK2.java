@@ -82,7 +82,7 @@ public class Drive_MK2 extends LinearOpMode
                 //Declares a sets a variable for the starting encoder value on a specific motor
                 double encoderReadingLB = motors[2].getCurrentPosition();
                 //Calculates desired encoder value by adding/subtracting the reading taken above by the desired encoder delta
-                double target = (encoderReadingLB - encoderDelta);
+                double target = (encoderReadingLB + encoderDelta);
 
                 //Method declaration that will set the correct motor powers to move the robot the desired direction (based on which case you are in) with desired motor power
                 forward(motorPower, motors);
@@ -91,7 +91,7 @@ public class Drive_MK2 extends LinearOpMode
                 Loop that haults the code from progressing till the desired encoder count is met.
                 This desired encoder value could either be positive or negative, so the appropriate logic is applied.
                 */
-                while (motors[2].getCurrentPosition() >= target)
+                while (motors[2].getCurrentPosition() <= target)
                 {
 
                 }
@@ -107,10 +107,10 @@ public class Drive_MK2 extends LinearOpMode
             case BACKWARD:
             {
                 double encoderReadingLB = motors[2].getCurrentPosition();
-                double target = (encoderDelta + encoderReadingLB);
+                double target = (encoderDelta - encoderReadingLB);
                 backward(motorPower, motors);
 
-                while (motors[2].getCurrentPosition() <= target)
+                while (motors[2].getCurrentPosition() >= target)
                 {
 
                 }
@@ -122,10 +122,10 @@ public class Drive_MK2 extends LinearOpMode
             case STRAFE_LEFT:
             {
                 double encoderReadingLB = motors[2].getCurrentPosition();
-                double target = (encoderReadingLB - encoderDelta);
+                double target = (encoderReadingLB + encoderDelta);
                 strafeLeft(motorPower, motors);
 
-                while (motors[2].getCurrentPosition() >= target)
+                while (motors[2].getCurrentPosition() <= target)
                 {
 
                 }
