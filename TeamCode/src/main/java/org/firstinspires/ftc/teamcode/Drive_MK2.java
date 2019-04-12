@@ -82,7 +82,7 @@ public class Drive_MK2 extends LinearOpMode
                 //Declares a sets a variable for the starting encoder value on a specific motor
                 double encoderReadingLB = motors[2].getCurrentPosition();
                 //Calculates desired encoder value by adding/subtracting the reading taken above by the desired encoder delta
-                double target = (encoderReadingLB -encoderDelta);
+                double target = (encoderReadingLB - encoderDelta);
 
                 //Method declaration that will set the correct motor powers to move the robot the desired direction (based on which case you are in) with desired motor power
                 forward(motorPower, motors);
